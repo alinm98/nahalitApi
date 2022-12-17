@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\Admin\GalleryController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Admin\CommentController;
 use App\Http\Controllers\Api\V1\Admin\CouponController;
+use App\Http\Controllers\Api\V1\Admin\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,5 +42,11 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::put('coupon/{id}', [CouponController::class, 'update'])->name('coupon.update');
     Route::delete('coupon/{id}', [CouponController::class, 'destroy'])->name('coupon.destroy');
     /* Coupon Routes */
+
+    /* Order Routes */
+    Route::get('order', [OrderController::class, 'index'])->name('order.index');
+    Route::delete('order', [OrderController::class, 'destroy'])->name('order.destroy');
+    Route::put('order/confirm/{id}', [OrderController::class, 'confirmOrder'])->name('order.confirmOrder');
+    /* Order Routes */
 
 });
