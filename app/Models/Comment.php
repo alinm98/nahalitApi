@@ -18,4 +18,19 @@ class Comment extends Model
         'user_id',
         'product_id',
     ];
+
+    /* User Comments Relation */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    /* User Comments Relation */
+
+    /* Product Comments Relation */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+    /* Product Comments Relation */
+
 }
