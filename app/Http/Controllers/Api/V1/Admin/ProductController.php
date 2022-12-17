@@ -8,6 +8,7 @@ use App\Http\Resources\V1\ProductCollection;
 use App\Http\Resources\V1\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
+use http\Env\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -85,13 +86,19 @@ class ProductController extends Controller
         }
 
         //update product
-        $product->update([
+        $update = $product->update([
             'title' => $request->get('title'),
             'price' => $request->get('price'),
             'image' => $image,
             'description' => $request->get('description'),
             'category_id' => $request->get('category_id'),
         ]);
+        if (!$update){
+            return response()->json([
+                $update->errors()
+            ],400);
+        }
+
         return response()->json([
             'massage' => 'products updated successfully'
         ],200);

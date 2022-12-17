@@ -4,23 +4,21 @@ namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class GalleryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray($request): array|\JsonSerializable|\Illuminate\Contracts\Support\Arrayable
     {
         return [
             'id' => $this->id,
-            'category_id' => $this->category_id,
             'title' => $this->title,
+            'product_id' => $this->product_id,
             'image' => $this->image,
-            'price' => $this->price,
-            'description' => $this->description,
         ];
     }
 }

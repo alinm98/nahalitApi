@@ -57,6 +57,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category): \Illuminate\Http\JsonResponse
     {
 
+        //check for unique title
         $catExist = Category::query()->where('title' , $request->get('title'))
             ->where('id' , '!=' , $category->id)->exists();
 
@@ -65,10 +66,19 @@ class CategoryController extends Controller
                 'error' => 'this title already exist'
             ],400);
         }
+
+        //update category in database
         $update = $category->update([
             'title' => $request->get('title'),
             'category_id' => $request->get('category_id'),
         ]);
+
+        //return errors
+        if (!$update){
+            return response()->json([
+                $update->errors()
+            ],400);
+        }
 
         return Response()->json([
             'massage' => 'Category updated successfully'
@@ -83,6 +93,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category): \Illuminate\Http\JsonResponse
     {
+        //delete category from database
         $category->delete();
         return Response()->json([
             'massage' => 'category deleted successfully'
