@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCommentRequest;
 use App\Http\Resources\V1\CommentCollection;
-use App\Http\Resources\v1\CommentResource;
+use App\Http\Resources\V1\CommentResource;
+use App\Http\Resources\V1\ProductResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Response;
 class CommentController extends Controller
 {
 
-    private $model;
+    private Comment $model;
 
     public function __construct()
     {
@@ -37,12 +37,24 @@ class CommentController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param Comment $comment
+     * @return CommentResource
+     */
+
+    public function show(Comment $comment): CommentResource
+    {
+        return new CommentResource($comment);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\Response
     {
 
         $comment = $this->model->where('id', $id)->first();
@@ -85,7 +97,7 @@ class CommentController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function confirmComment($id)
+    public function confirmComment($id): \Illuminate\Http\Response
     {
         $comment = $this->model->where('id', $id)->first();
 

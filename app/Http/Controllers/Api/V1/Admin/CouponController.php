@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1\Admin;
+namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCouponRequest;
 use App\Http\Requests\UpdateCouponRequest;
 use App\Http\Resources\v1\CouponCollection;
 use App\Http\Resources\v1\CouponResource;
+use App\Http\Resources\V1\ProductResource;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
 
-    private $model;
+    private Coupon $model;
 
     public function __construct()
     {
@@ -23,9 +24,9 @@ class CouponController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return CouponCollection
      */
-    public function index()
+    public function index(): CouponCollection
     {
 
         /* Get All Coupons */
@@ -37,12 +38,23 @@ class CouponController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\Coupon $coupon
+     * @return CouponResource
+     */
+    public function show(Coupon $coupon): CouponResource
+    {
+        return new CouponResource($coupon);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return CouponResource
      */
-    public function store(StoreCouponRequest $request)
+    public function store(StoreCouponRequest $request): CouponResource
     {
 
         $data = $request->all();
@@ -110,7 +122,7 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\Response
     {
 
         $coupon = $this->model->where('id', $id)->first();

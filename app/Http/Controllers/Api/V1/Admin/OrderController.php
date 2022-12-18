@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
 
-    private $model;
+    private Order $model;
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Http\Response|OrderCollection
     {
 
         $sent = false;
@@ -43,6 +43,7 @@ class OrderController extends Controller
         /* Return Response */
 
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -50,7 +51,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): \Illuminate\Http\Response
     {
 
         $sent = false;
@@ -87,7 +88,7 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function confirmOrder($id)
+    public function confirmOrder($id): \Illuminate\Http\Response
     {
         $order = $this->model->where('id', $id)->first();
 
