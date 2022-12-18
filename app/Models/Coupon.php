@@ -16,4 +16,12 @@ class Coupon extends Model
         'coupon_value',
         'user_id',
     ];
+
+    /* User Coupons Relation */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    /* User Coupons Relation */
+
 }

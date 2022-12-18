@@ -24,6 +24,13 @@ class Product extends Model
         return $this->hasMany(Gallery::class);
     }
 
+    /* Product Comments Relation */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'product_id');
+    }
+    /* Product Comments Relation */
+
 
 
 
