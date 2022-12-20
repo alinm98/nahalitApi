@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Admin\DiscountController;
 use App\Http\Controllers\Api\V1\Admin\GalleryController;
 use App\Http\Controllers\Api\V1\Admin\OrderController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
+use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +27,10 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('categories' , CategoryController::class);
     Route::apiResource('products' , ProductController::class);
     Route::apiResource('products.discounts', DiscountController::class);
+    Route::apiResource('propertiesGroup',PropertyGroupController::class);
 
+
+    //Gallery Routes
     Route::get('/galleries/{product}' , [GalleryController::class,'index']);
     Route::post('/galleries/{product}' , [GalleryController::class,'store']);
     Route::delete('/galleries/{gallery}' , [GalleryController::class,'destroy']);
