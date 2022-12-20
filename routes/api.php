@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\Admin\GalleryController;
 use App\Http\Controllers\Api\V1\Admin\OrderController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
+use App\Http\Controllers\Api\V1\Admin\BlogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,5 +59,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('users', UserController::class)->only('index', 'destroy');
     /* User Routes */
 
+    /* Blog Routes */
+    Route::apiResource('blogs', BlogController::class);
+    /* Blog Routes */
 
 });
