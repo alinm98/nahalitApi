@@ -31,7 +31,11 @@ class Product extends Model
     }
     /* Product Comments Relation */
 
-
-
+    /* Seller Products Relationships */
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class, 'seller_id');
+    }
+    /* Seller Products Relationships */
 
 }
