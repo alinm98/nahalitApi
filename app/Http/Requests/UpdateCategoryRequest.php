@@ -25,7 +25,9 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'title' => ['required'],
-            'category_id' => ['nullable', 'exists:categories,id']
+            'category_id' => ['nullable', 'exists:categories,id'],
+            'property_groups' => ['array'],
+            'property_groups.*' => ['exists:property_groups,id'],
         ];
     }
 }

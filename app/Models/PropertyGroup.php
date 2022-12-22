@@ -12,4 +12,9 @@ class PropertyGroup extends Model
     protected $fillable=[
         'title'
     ];
+
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }
