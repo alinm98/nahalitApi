@@ -19,4 +19,13 @@ class Property extends Model
     }
 
 
+    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Product::class)
+            ->withPivot(['value'])
+            ->withTimestamps();
+    }
+
+
+
 }
