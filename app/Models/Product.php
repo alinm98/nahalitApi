@@ -25,11 +25,12 @@ class Product extends Model
     }
 
     /* Product Comments Relation */
-    public function comments()
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Comment::class, 'product_id');
     }
     /* Product Comments Relation */
+
 
     /* Seller Products Relationships */
     public function seller()
@@ -37,5 +38,16 @@ class Product extends Model
         return $this->belongsTo(Seller::class, 'seller_id');
     }
     /* Seller Products Relationships */
+
+    public function properties(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Property::class)
+            ->withPivot(['value'])
+            ->withTimestamps();
+    }
+
+
+
+
 
 }

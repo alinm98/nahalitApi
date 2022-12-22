@@ -8,43 +8,57 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\V1\CategoryCollection;
 use App\Http\Resources\V1\CategoryResource;
 use App\Models\Category;
+use http\Env\Response;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return CategoryCollection
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(): CategoryCollection
+    public function index(): \Illuminate\Http\JsonResponse
     {
-        return new CategoryCollection(Category::all());
+        return Response()->json([
+            'categories' => new CategoryCollection(Category::all())
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return CategoryResource
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreCategoryRequest $request): CategoryResource
+    public function store(StoreCategoryRequest $request): \Illuminate\Http\JsonResponse
     {
+        $property_groups = $request->get('property_groups');
+
         $category = Category::query()->create([
             'title' => $request->get('title'),
             'category_id' => $request->get('category_id')
         ]);
-        return new CategoryResource($category);
+
+        $category->propertyGroup()->attach($property_groups);
+
+        return Response()->json([
+            'status' => true,
+            'category' => new CategoryResource($category),
+            'property_groups' => $property_groups
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
      * @param \App\Models\Category $category
-     * @return CategoryResource
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Category $category): CategoryResource
+    public function show(Category $category): \Illuminate\Http\JsonResponse
     {
-        return new CategoryResource($category);
+        return response()->json([
+            'category' => new CategoryResource($category)
+        ], 200);
     }
 
     /**
@@ -58,13 +72,13 @@ class CategoryController extends Controller
     {
 
         //check for unique title
-        $catExist = Category::query()->where('title' , $request->get('title'))
-            ->where('id' , '!=' , $category->id)->exists();
+        $catExist = Category::query()->where('title', $request->get('title'))
+            ->where('id', '!=', $category->id)->exists();
 
-        if ($catExist){
+        if ($catExist) {
             return Response()->json([
-                'error' => 'this title already exist'
-            ],400);
+                'error' => 'این عنوان اکنون وچود دارد'
+            ], 400);
         }
 
         //update category in database
@@ -73,16 +87,21 @@ class CategoryController extends Controller
             'category_id' => $request->get('category_id'),
         ]);
 
+        //sync property groups in database
+        $category->propertyGroup()->sync($request->get('property_groups'));
+
         //return errors
-        if (!$update){
+        if (!$update) {
             return response()->json([
-                $update->errors()
-            ],400);
+                'status' => false,
+                'massage' => 'خطایی در عملیات بروزرسانی رخ داده است'
+            ], 400);
         }
 
         return Response()->json([
-            'massage' => 'Category updated successfully'
-        ],200);
+            'status' => true,
+            'massage' => 'بروزرسانی با موفقیت انجام شد'
+        ], 200);
     }
 
     /**
@@ -93,10 +112,23 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category): \Illuminate\Http\JsonResponse
     {
+        //delete property groups from database
+        $category->propertyGroup()->detach();
+
         //delete category from database
-        $category->delete();
+        $delete = $category->delete();
+
+        if (!$delete) {
+            return response()->json([
+                'status' => false,
+                'massage' => 'خطایی در عملیات حذف رخ داده است'
+            ], 400);
+        }
+
+
         return Response()->json([
-            'massage' => 'category deleted successfully'
-        ],200);
+            'status' => true,
+            'massage' => 'حذف با موفقیت انجام شد'
+        ], 200);
     }
 }
