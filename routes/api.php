@@ -10,9 +10,13 @@ use App\Http\Controllers\Api\V1\Admin\ProductController;
 
 use App\Http\Controllers\Api\V1\Admin\UserController;
 
+use App\Http\Controllers\Api\V1\Admin\BlogController;
+
+
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -72,5 +76,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('users', UserController::class)->only('index', 'destroy');
     /* User Routes */
 
+    /* Blog Routes */
+    Route::apiResource('blogs', BlogController::class);
+    /* Blog Routes */
 
 });
