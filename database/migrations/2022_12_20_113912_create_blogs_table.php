@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('image')->default('http://localhost/Admin/Images/without-thumbnail.jpg');
+            $table->string('image')->default('http://localhost/Admin/Images/without-thumbnail.jpg');
             $table->string('slug');
             $table->text('body');
             $table->boolean('is_active');

@@ -12,6 +12,9 @@ use App\Http\Controllers\Api\V1\Admin\UserController;
 
 use App\Http\Controllers\Api\V1\Admin\BlogController;
 
+use App\Http\Controllers\Api\V1\Admin\SellerController;
+
+
 
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
@@ -79,5 +82,9 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     /* Blog Routes */
     Route::apiResource('blogs', BlogController::class);
     /* Blog Routes */
+
+    /* Seller Routes */
+    Route::apiResource('sellers', SellerController::class);
+    /* Seller Routes */
 
 });
