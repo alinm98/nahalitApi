@@ -36,4 +36,9 @@ class Category extends Model
         }
         return $array;
     }
+
+    public function propertyGroup(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(PropertyGroup::class);
+    }
 }
