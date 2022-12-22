@@ -7,9 +7,13 @@ use App\Http\Controllers\Api\V1\Admin\DiscountController;
 use App\Http\Controllers\Api\V1\Admin\GalleryController;
 use App\Http\Controllers\Api\V1\Admin\OrderController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
+
+use App\Http\Controllers\Api\V1\Admin\UserController;
+
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,6 +67,10 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::delete('orders', [OrderController::class, 'destroy']);
     Route::put('orders/confirm/{id}', [OrderController::class, 'confirmOrder']);
     /* Order Routes */
+
+    /* User Routes */
+    Route::apiResource('users', UserController::class)->only('index', 'destroy');
+    /* User Routes */
 
 
 });
