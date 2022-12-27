@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
+use App\Http\Controllers\Api\V1\Admin\WorkSampleController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -86,5 +87,9 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     /* Seller Routes */
     Route::apiResource('sellers', SellerController::class);
     /* Seller Routes */
+
+    /* Work Sample Routes */
+    Route::apiResource('work-sample', WorkSampleController::class)->only(['index', 'store', 'update', 'destroy']);
+    /* Work Sample Routes */
 
 });
