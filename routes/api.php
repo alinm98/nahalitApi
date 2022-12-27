@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\Admin\UserController;
 use App\Http\Controllers\Api\V1\Admin\BlogController;
 
 use App\Http\Controllers\Api\V1\Admin\SellerController;
+use App\Http\Controllers\Api\V1\Admin\TicketController;
 
 
 
@@ -86,5 +87,9 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     /* Seller Routes */
     Route::apiResource('sellers', SellerController::class);
     /* Seller Routes */
+
+    /* Ticket Routes */
+    Route::apiResource('tickets', TicketController::class);
+    /* Ticket Routes */
 
 });
