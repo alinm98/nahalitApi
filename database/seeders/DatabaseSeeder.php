@@ -27,7 +27,10 @@ class DatabaseSeeder extends Seeder
             BlogTableSeeder::class,
 
             // User Seeder
-            UserTableSeeder::class
+            UserTableSeeder::class,
+
+            // Ticket Seeder
+            TicketTableSeeder::class
 
         ]);
     }
