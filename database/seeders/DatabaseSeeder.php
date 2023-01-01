@@ -34,7 +34,9 @@ class DatabaseSeeder extends Seeder
 
             OrderTableSeeder::class,
 
-            BlogTableSeeder::class
+            BlogTableSeeder::class,
+
+            ServiceSeeder::class,
         ]);
     }
 }
