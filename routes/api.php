@@ -8,6 +8,18 @@ use App\Http\Controllers\Api\V1\Admin\DiscountController;
 use App\Http\Controllers\Api\V1\Admin\GalleryController;
 use App\Http\Controllers\Api\V1\Admin\OrderController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
+
+
+use App\Http\Controllers\Api\V1\Admin\UserController;
+
+use App\Http\Controllers\Api\V1\Admin\BlogController;
+
+use App\Http\Controllers\Api\V1\Admin\SellerController;
+use App\Http\Controllers\Api\V1\Admin\TicketController;
+
+
+
+
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
@@ -83,5 +95,9 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     /* Seller Routes */
     Route::apiResource('sellers', SellerController::class);
     /* Seller Routes */
+
+    /* Ticket Routes */
+    Route::apiResource('tickets', TicketController::class);
+    /* Ticket Routes */
 
 });
