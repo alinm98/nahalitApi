@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
+use App\Http\Controllers\Api\V1\Admin\WorkSampleController;
 
 use App\Http\Controllers\Api\V1\Admin\RecruitmentController;
 
@@ -102,6 +103,10 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('sellers', SellerController::class);
     /* Seller Routes */
 
+    /* Work Sample Routes */
+    Route::apiResource('work-sample', WorkSampleController::class)->only(['index', 'store', 'update', 'destroy']);
+    /* Work Sample Routes */
+
 
     /* Recruitment Routes */
     Route::apiResource('recruitments', RecruitmentController::class)->only(['index', 'show']);
@@ -110,6 +115,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     /* Ticket Routes */
     Route::apiResource('tickets', TicketController::class);
     /* Ticket Routes */
+
 
 
 });
