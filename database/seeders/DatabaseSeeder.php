@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,14 +30,27 @@ class DatabaseSeeder extends Seeder
             // User Seeder
             UserTableSeeder::class,
 
+
             // Ticket Seeder
             TicketTableSeeder::class,
 
             // Project Seeder
+
             ProjectTableSeeder::class,
 
             // Report Seeder
             ReportTableSeeder::class
+
+            ProjectTableSeeder::class
+
+            CategorySeeder::class,
+
+            OrderTableSeeder::class,
+
+            BlogTableSeeder::class,
+
+            ServiceSeeder::class,
+
 
         ]);
     }
