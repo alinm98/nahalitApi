@@ -63,4 +63,11 @@ class User extends Authenticatable
     }
     /* User Comments Relation */
 
+    /* User Installments Relation */
+    public function installments()
+    {
+        return $this->hasMany(Installment::class, 'user_id');
+    }
+    /* User Installments Relation */
+
 }
