@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
+use App\Http\Controllers\Api\V1\Admin\ReportController;
 
 use App\Http\Controllers\Api\V1\Admin\ProjectController;
 
@@ -120,9 +121,14 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('tickets', TicketController::class);
     /* Ticket Routes */
 
+    /* Report Routes */
+    Route::apiResource('reports', ReportController::class)->only(['index', 'store', 'update']);
+    /* Report Routes */
+
     /* Project Routes */
     Route::apiResource('projects', ProjectController::class)->only(['index']);
     /* Project Routes */
+
 
 
 
