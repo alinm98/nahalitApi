@@ -23,10 +23,16 @@ use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
+
+use App\Http\Controllers\Api\V1\Admin\RecruitmentController;
+
+
+
 use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\ServicesGroupController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -96,8 +102,14 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('sellers', SellerController::class);
     /* Seller Routes */
 
+
+    /* Recruitment Routes */
+    Route::apiResource('recruitments', RecruitmentController::class)->only(['index', 'show']);
+    /* Recruitment Routes */
+
     /* Ticket Routes */
     Route::apiResource('tickets', TicketController::class);
     /* Ticket Routes */
+
 
 });
