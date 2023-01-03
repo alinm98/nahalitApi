@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Blog;
+use App\Models\Service;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class BlogTableSeeder extends Seeder
+class ServiceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,6 @@ class BlogTableSeeder extends Seeder
      */
     public function run()
     {
-        Blog::factory(1000)->create();
+        Service::factory(100)->create();
     }
 }
