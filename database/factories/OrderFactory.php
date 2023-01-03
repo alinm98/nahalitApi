@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
  */
-class CategoryFactory extends Factory
+class OrderFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,10 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->unique()->jobTitle,
-            'category_id' => 1
+            'status' => true,
+            'confirm' => true,
+            'total' => 10000000,
+            'user_id' => 1
         ];
     }
 }
