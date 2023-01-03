@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
+use App\Http\Controllers\Api\V1\Admin\ReportController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -91,5 +92,9 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     /* Ticket Routes */
     Route::apiResource('tickets', TicketController::class);
     /* Ticket Routes */
+
+    /* Report Routes */
+    Route::apiResource('reports', ReportController::class)->only(['index', 'store', 'update']);
+    /* Report Routes */
 
 });
