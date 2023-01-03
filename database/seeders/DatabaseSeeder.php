@@ -30,8 +30,10 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
 
             // Ticket Seeder
-            TicketTableSeeder::class
+            TicketTableSeeder::class,
 
+            // Project Seeder
+            ProjectTableSeeder::class
         ]);
     }
 }
