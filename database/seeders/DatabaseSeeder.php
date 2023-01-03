@@ -30,6 +30,13 @@ class DatabaseSeeder extends Seeder
             // User Seeder
             UserTableSeeder::class,
 
+
+            // Ticket Seeder
+            TicketTableSeeder::class,
+
+            // Project Seeder
+            ProjectTableSeeder::class
+
             CategorySeeder::class,
 
             OrderTableSeeder::class,
@@ -37,6 +44,7 @@ class DatabaseSeeder extends Seeder
             BlogTableSeeder::class,
 
             ServiceSeeder::class,
+
         ]);
     }
 }
