@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreServicesGroupRequest;
-use App\Http\Requests\UpdateServicesGroupRequest;
-use App\Http\Resources\V1\ServicesGroupCollection;
-use App\Http\Resources\V1\ServicesGroupResource;
+use App\Http\Requests\StoreServiceGroupRequest;
+use App\Http\Requests\UpdateServiceGroupRequest;
+use App\Http\Resources\V1\ServiceGroupCollection;
+use App\Http\Resources\V1\ServiceGroupResource;
 use App\Models\Category;
-use App\Models\ServicesGroup;
+use App\Models\ServiceGroup;
 
-class ServicesGroupController extends Controller
+
+class ServiceGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +21,7 @@ class ServicesGroupController extends Controller
     public function index(): \Illuminate\Http\JsonResponse
     {
         return response()->json([
-            'services_group' => new ServicesGroupCollection(ServicesGroup::all())
+            'service_groups' => new ServiceGroupCollection(ServiceGroup::all())
         ], 200);
     }
 
@@ -28,62 +29,65 @@ class ServicesGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreServicesGroupRequest $request
+     * @param  \App\Http\Requests\StoreServiceGroupRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreServicesGroupRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StoreServiceGroupRequest $request): \Illuminate\Http\JsonResponse
     {
+
         //storing in database
-        $store = ServicesGroup::query()->create([
+        $store = ServiceGroup::query()->create([
             'title' => $request->get('title'),
-            'services_group_id' => $request->get('services_group_id'),
+            'service_group_id' => $request->get('services_group_id'),
             'first_value' => $request->get('first_value'),
             'second_value' => $request->get('second_value'),
             'description' => $request->get('description'),
         ]);
 
+        $store->service()->attach($request->get('services'));
         //return result
         return response()->json([
             'status' => true,
-            'services_group' => new ServicesGroupResource($store)
+            'service_groups' => new ServiceGroupResource($store)
         ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\ServicesGroup $servicesGroup
+     * @param  \App\Models\ServiceGroup  $serviceGroup
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(ServicesGroup $servicesGroup): \Illuminate\Http\JsonResponse
+    public function show(ServiceGroup $serviceGroup): \Illuminate\Http\JsonResponse
     {
-
         return response()->json([
-            'services_group' => new ServicesGroupResource($servicesGroup),
-            'services_group_children' => new ServicesGroupCollection($servicesGroup->children)
+            'service_groups' => new ServiceGroupResource($serviceGroup),
+            'service_groups_children' => new ServiceGroupCollection($serviceGroup->children)
         ], 200);
     }
+
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateServicesGroupRequest $request
-     * @param \App\Models\ServicesGroup $servicesGroup
+     * @param  \App\Http\Requests\UpdateServiceGroupRequest  $request
+     * @param  \App\Models\ServiceGroup  $serviceGroup
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateServicesGroupRequest $request, ServicesGroup $servicesGroup): \Illuminate\Http\JsonResponse
+    public function update(UpdateServiceGroupRequest $request, ServiceGroup $serviceGroup): \Illuminate\Http\JsonResponse
     {
-        $servicesExist = Category::query()->where('title', $request->get('title'))
-            ->where('id', '!=', $servicesGroup->id)->exists();
+        $serviceExist = ServiceGroup::query()->where('title', $request->get('title'))
+            ->where('id', '!=', $serviceGroup->id)
+            ->exists();
 
-        if ($servicesExist) {
+        if ($serviceExist) {
             return Response()->json([
                 'error' => 'این عنوان اکنون وچود دارد'
             ], 400);
         }
 
-        $update = $servicesGroup->update([
+        $update = $serviceGroup->update([
             'title' => $request->get('title'),
             'services_group_id' => $request->get('services_group_id'),
             'first_value' => $request->get('first_value'),
@@ -103,18 +107,17 @@ class ServicesGroupController extends Controller
             'status' => true,
             'massage' => 'بروزرسانی با موفقیت انجام شد'
         ], 200);
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\ServicesGroup $servicesGroup
+     * @param  \App\Models\ServiceGroup  $serviceGroup
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(ServicesGroup $servicesGroup)
+    public function destroy(ServiceGroup $serviceGroup): \Illuminate\Http\JsonResponse
     {
-        $delete = $servicesGroup->delete();
+        $delete = $serviceGroup->delete();
 
         if (!$delete) {
             return response()->json([

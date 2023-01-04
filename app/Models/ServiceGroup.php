@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ServicesGroup extends Model
+class ServiceGroup extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title', 'services_group_id', 'first_value', 'second_value', 'description'
+        'title', 'service_group_id', 'first_value', 'second_value', 'description'
     ];
 
     public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo

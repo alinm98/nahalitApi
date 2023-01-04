@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('services_groups', function (Blueprint $table) {
+        Schema::create('service_groups', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
-            $table->foreignId('services_group_id')->nullable()->constrained();
+            $table->foreignId('service_group_id')->nullable()->constrained();
             $table->integer('first_value');
             $table->integer('second_value')->nullable();
             $table->text('description')->nullable();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('services_groups');
+        Schema::dropIfExists('service_groups');
     }
 };

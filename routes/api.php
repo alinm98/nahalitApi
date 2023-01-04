@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
 use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
-use App\Http\Controllers\Api\V1\Admin\ServicesGroupController;
+use App\Http\Controllers\Api\V1\Admin\ServiceGroupController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,7 +37,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('products.discounts', DiscountController::class);
     Route::apiResource('propertiesGroup',PropertyGroupController::class);
     Route::apiResource('properties',PropertyController::class);
-    Route::apiResource('servicesGroups' , ServicesGroupController::class);
+    Route::apiResource('serviceGroups' , ServiceGroupController::class);
     Route::apiResource('services', ServiceController::class);
 
     //product properties
