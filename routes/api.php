@@ -8,13 +8,37 @@ use App\Http\Controllers\Api\V1\Admin\DiscountController;
 use App\Http\Controllers\Api\V1\Admin\GalleryController;
 use App\Http\Controllers\Api\V1\Admin\OrderController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
+
+
+use App\Http\Controllers\Api\V1\Admin\UserController;
+
+use App\Http\Controllers\Api\V1\Admin\BlogController;
+
+use App\Http\Controllers\Api\V1\Admin\SellerController;
+use App\Http\Controllers\Api\V1\Admin\TicketController;
+
+
+
+
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
+use App\Http\Controllers\Api\V1\Admin\ReportController;
+
+use App\Http\Controllers\Api\V1\Admin\ProjectController;
+
+use App\Http\Controllers\Api\V1\Admin\WorkSampleController;
+
+use App\Http\Controllers\Api\V1\Admin\RecruitmentController;
+
+
+
+
 use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\ServiceGroupController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -83,5 +107,30 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     /* Seller Routes */
     Route::apiResource('sellers', SellerController::class);
     /* Seller Routes */
+
+    /* Work Sample Routes */
+    Route::apiResource('work-sample', WorkSampleController::class)->only(['index', 'store', 'update', 'destroy']);
+    /* Work Sample Routes */
+
+
+    /* Recruitment Routes */
+    Route::apiResource('recruitments', RecruitmentController::class)->only(['index', 'show']);
+    /* Recruitment Routes */
+
+    /* Ticket Routes */
+    Route::apiResource('tickets', TicketController::class);
+    /* Ticket Routes */
+
+    /* Report Routes */
+    Route::apiResource('reports', ReportController::class)->only(['index', 'store', 'update']);
+    /* Report Routes */
+
+    /* Project Routes */
+    Route::apiResource('projects', ProjectController::class)->only(['index']);
+    /* Project Routes */
+
+
+
+
 
 });
