@@ -6,40 +6,29 @@ use App\Http\Controllers\Api\V1\Admin\CommentController;
 use App\Http\Controllers\Api\V1\Admin\CouponController;
 use App\Http\Controllers\Api\V1\Admin\DiscountController;
 use App\Http\Controllers\Api\V1\Admin\GalleryController;
+use App\Http\Controllers\Api\V1\Admin\IpController;
 use App\Http\Controllers\Api\V1\Admin\OrderController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
-
-
-use App\Http\Controllers\Api\V1\Admin\UserController;
-
-use App\Http\Controllers\Api\V1\Admin\BlogController;
-
-use App\Http\Controllers\Api\V1\Admin\SellerController;
-use App\Http\Controllers\Api\V1\Admin\TicketController;
-
-
-
-
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
+use App\Http\Controllers\Api\V1\Admin\ProjectController;
 use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
-use App\Http\Controllers\Api\V1\Admin\ReportController;
-
-use App\Http\Controllers\Api\V1\Admin\ProjectController;
-
-use App\Http\Controllers\Api\V1\Admin\WorkSampleController;
-
 use App\Http\Controllers\Api\V1\Admin\RecruitmentController;
-
-
-
-
+use App\Http\Controllers\Api\V1\Admin\ReportController;
 use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\ServiceGroupController;
+use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
-
+use App\Http\Controllers\Api\V1\Admin\WorkSampleController;
 use Illuminate\Support\Facades\Route;
+
+
+//use App\Http\Controllers\Api\V1\Admin\BlogController;
+
+
+//use App\Http\Controllers\Api\V1\Admin\SellerController;
+//use App\Http\Controllers\Api\V1\Admin\UserController;
 
 
 /*
@@ -63,6 +52,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('properties',PropertyController::class);
     Route::apiResource('serviceGroups' , ServiceGroupController::class);
     Route::apiResource('services', ServiceController::class);
+    Route::apiResource('ips', IpController::class);
 
     //product properties
     Route::get('products/{product}/properties',[ProductPropertyController::class,'index']);
