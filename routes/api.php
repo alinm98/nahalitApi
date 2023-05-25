@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\Admin\PropertyController;
 use App\Http\Controllers\Api\V1\Admin\PropertyGroupController;
 use App\Http\Controllers\Api\V1\Admin\RecruitmentController;
 use App\Http\Controllers\Api\V1\Admin\ReportController;
+use App\Http\Controllers\Api\V1\Admin\RoleController;
 use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\ServiceGroupController;
@@ -53,6 +54,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('serviceGroups' , ServiceGroupController::class);
     Route::apiResource('services', ServiceController::class);
     Route::apiResource('ips', IpController::class);
+    Route::apiResource('roles' , RoleController::class);
 
     //product properties
     Route::get('products/{product}/properties',[ProductPropertyController::class,'index']);

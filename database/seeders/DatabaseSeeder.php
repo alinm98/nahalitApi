@@ -24,32 +24,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
 
-            // Blog Seeder
-            BlogTableSeeder::class,
 
-            // User Seeder
-            UserTableSeeder::class,
-
-
-            // Ticket Seeder
-            TicketTableSeeder::class,
-
-            // Project Seeder
-
-            ProjectTableSeeder::class,
-
-            // Report Seeder
-            ReportTableSeeder::class
-
-            ProjectTableSeeder::class
-
-            CategorySeeder::class,
-
-            OrderTableSeeder::class,
-
-            BlogTableSeeder::class,
-
-            ServiceSeeder::class,
+            PermissionSeeder::class,
 
 
         ]);
