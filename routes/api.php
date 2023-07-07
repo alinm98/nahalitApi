@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Admin\BasketController;
 use App\Http\Controllers\Api\V1\Admin\BlogController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\CommentController;
@@ -55,6 +56,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('services', ServiceController::class);
     Route::apiResource('ips', IpController::class);
     Route::apiResource('roles' , RoleController::class);
+    Route::apiResource('baskets', BasketController::class);
 
     //product properties
     Route::get('products/{product}/properties',[ProductPropertyController::class,'index']);

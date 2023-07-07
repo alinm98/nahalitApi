@@ -43,24 +43,29 @@ class User extends Authenticatable
     ];
 
     /* User Coupons Relation */
-    public function coupons()
+    public function coupons(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Coupon::class, 'user_id');
     }
     /* User Coupons Relation */
 
     /* User Orders Relation */
-    public function orders()
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Order::class, 'user_id');
     }
     /* User Orders Relation */
 
     /* User Comments Relation */
-    public function comments()
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Comment::class, 'user_id');
     }
     /* User Comments Relation */
+
+    public function baskets(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Basket::class);
+    }
 
 }
