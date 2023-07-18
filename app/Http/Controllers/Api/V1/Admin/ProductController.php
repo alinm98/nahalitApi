@@ -123,4 +123,13 @@ class ProductController extends Controller
             'massage' => 'product deleted successfully'
         ],200);
     }
+
+    public function search($value): \Illuminate\Http\JsonResponse
+    {
+        $products = Product::query()->where('title' ,'like' , '%'.$value.'%')->get();
+
+        return Response()->json([
+            'products' => new ProductCollection($products)
+        ]);
+    }
 }

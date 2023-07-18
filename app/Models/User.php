@@ -18,9 +18,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'username',
+        'mobile',
         'email',
         'password',
+        'role_id',
+        'code_meli',
+        'card_number'
     ];
 
     /**
@@ -66,6 +72,11 @@ class User extends Authenticatable
     public function baskets(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Basket::class);
+    }
+
+    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Role::class);
     }
 
 }

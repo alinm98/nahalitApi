@@ -29,7 +29,7 @@ class BasketController extends Controller
      * @param \App\Http\Requests\StoreBasketRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreBasketRequest $request)
+    public function store(StoreBasketRequest $request): \Illuminate\Http\JsonResponse
     {
         $basket = Basket::query()->create([
             'user_id' => $request->get('user_id'),
@@ -65,7 +65,7 @@ class BasketController extends Controller
      * @param \App\Models\Basket $basket
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Basket $basket)
+    public function destroy(Basket $basket): \Illuminate\Http\JsonResponse
     {
         $basket->delete();
 

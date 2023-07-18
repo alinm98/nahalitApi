@@ -3,115 +3,183 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\UserCollection;
-use App\Models\User;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\Category;
+use App\Models\user;
+use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-
-    private User $model;
-
-    public function __construct()
-    {
-        $this->model = new User();
-    }
-
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
-
-        /* Get All Users */
-        $users = $this->model->all();
-        /* Get All Users */
-
-        return new UserCollection($users);
-
+        return Response()->json([
+            'users' => User::all()
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse|null
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request): ?\Illuminate\Http\JsonResponse
     {
-        //
+        $user = User::query()->create([
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'username' => $request->get('username'),
+            'mobile' => $request->get('mobile'),
+            'password' => bcrypt($request->get('password')),
+            'email' => $request->get('email'),
+            'role_id' => 2,
+        ]);
+
+        $token = $user->createToken($user->username)->plainTextToken;
+
+        return Response()->json([
+            'massage' => 'تبریک، شما با موفقیت ثبت نام شدید',
+            'user' => $user,
+            'token' => $token
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(): \Illuminate\Http\JsonResponse
     {
-        //
+        if (!auth()->check()) {
+            return Response()->json([
+                'massage' => 'کاربر وارد نشده است'
+            ], 401);
+        }
+        return Response()->json([
+            'user' => auth()->user(),
+            'token' => auth()->user()->tokens
+        ], 200);
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function login(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
-        //
+        $user = User::query()->where('mobile', $request->get('mobile'))->firstOrFail();
+
+        if (!Hash::check($request->get('password'), $user->password)) {
+            return Response()->json([
+                'massage' => 'رمز وارد شده اشتباه است'
+            ], 401);
+        }
+
+        $token = $user->createToken($user->username)->plainTextToken;
+
+        return Response()->json([
+            'massage' => 'شما با موفقیت وارد شدید',
+            'user' => $user,
+            'token' => $token
+        ], 200);
+
     }
+
+
+    public function logout(): \Illuminate\Http\JsonResponse
+    {
+        auth()->user()->tokens()->delete();
+
+        return Response()->json([
+            'massage' => 'شما از اکانت خود خارج شدید',
+        ], 200);
+    }
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\user $user
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, user $user): \Illuminate\Http\JsonResponse
     {
-        //
-    }
+        //check for unique username
+        $usernameExist = User::query()->where('username', $request->get('username'))
+            ->where('id', '!=', $user->id)->exists();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-
-        /* Delete User */
-        $res = $user->delete();
-        /* Delete User */
-
-        if(!$res){
-            return response([
-                'result' => false,
-                'message' => 'خطا در انجام عملیات'
-            ], 500);
+        if ($usernameExist) {
+            return Response()->json([
+                'error' => 'این نام کاربری اکنون وچود دارد'
+            ], 400);
         }
 
-        return response([
-            'result' => true,
-            'message' => 'با موفقیت حذف شد'
+        //check for unique mobile
+        $mobileExist = User::query()->where('mobile', $request->get('mobile'))
+            ->where('id', '!=', $user->id)->exists();
+
+        if ($mobileExist) {
+            return Response()->json([
+                'error' => 'این شماره تلقن اکنون وچود دارد'
+            ], 400);
+        }
+
+        //check for unique email
+        $emailExist = User::query()->where('email', $request->get('email'))
+            ->where('id', '!=', $user->id)->exists();
+
+        if ($emailExist) {
+            return Response()->json([
+                'error' => 'این ایمیل اکنون وچود دارد'
+            ], 400);
+        }
+
+        //check for unique code_meli
+        $code_meliExist = User::query()->where('code_meli', $request->get('code_meli'))
+            ->where('id', '!=', $user->id)->exists();
+
+        if ($code_meliExist) {
+            return Response()->json([
+                'error' => 'این کد ملی اکنون وچود دارد'
+            ], 400);
+        }
+
+        //check for unique card_number
+        $card_numberExist = User::query()->where('card_number', $request->get('card_number'))
+            ->where('id', '!=', $user->id)->exists();
+
+        if ($card_numberExist) {
+            return Response()->json([
+                'error' => 'این شماره کارت اکنون وچود دارد'
+            ], 400);
+        }
+
+
+        $user->update([
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'username' => $request->get('username'),
+            'mobile' => $request->get('mobile'),
+            'password' => bcrypt($request->get('password')),
+            'email' => $request->get('email'),
+            'role_id' => $request->get('role_id'),
+        ]);
+
+        return Response()->json([
+            'massage' => 'به روزرسانی با موفقیت انجام شد',
         ], 200);
 
     }
+
+
 }
