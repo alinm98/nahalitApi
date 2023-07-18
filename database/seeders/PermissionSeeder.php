@@ -440,6 +440,30 @@ class PermissionSeeder extends Seeder
                 'path' => 'حذف نمونه کار'
             ] ,
 
+            /*
+            role Permissions
+            */
+
+            [
+                'title' => 'view-role',
+                'path' => 'دیدن نقش'
+            ] ,
+
+            [
+                'title' => 'create-role',
+                'path' => 'ایجاد نقش'
+            ] ,
+
+            [
+                'title' => 'update-role',
+                'path' => 'ویرایش نقش'
+            ] ,
+
+            [
+                'title' => 'delete-role',
+                'path' => 'حذف نقش'
+            ] ,
+
 
         ]);
     }

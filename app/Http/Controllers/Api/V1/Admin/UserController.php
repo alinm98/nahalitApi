@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    
+
+
     /**
      * Display a listing of the resource.
      *
