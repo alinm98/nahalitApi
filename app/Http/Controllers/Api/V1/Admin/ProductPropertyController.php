@@ -9,6 +9,8 @@ use http\Env\Request;
 
 class ProductPropertyController extends Controller
 {
+
+
     public function index(Product $product)
     {
         return response()->json([

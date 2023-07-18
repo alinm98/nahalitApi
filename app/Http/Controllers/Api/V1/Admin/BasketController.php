@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreBasketRequest;
 use App\Http\Requests\UpdateBasketRequest;
 use App\Http\Resources\V1\BasketCollection;
@@ -12,6 +13,14 @@ use App\Models\User;
 
 class BasketController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-basket")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-basket")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-basket")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-basket")->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *

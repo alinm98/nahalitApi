@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreCouponRequest;
 use App\Http\Requests\UpdateCouponRequest;
 use App\Http\Resources\v1\CouponCollection;
@@ -19,6 +20,12 @@ class CouponController extends Controller
     public function __construct()
     {
         $this->model = new Coupon();
+
+        $this->middleware(checkPermissions::class.":view-coupon")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-coupon")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-coupon")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-coupon")->only(['delete']);
+
     }
 
     /**

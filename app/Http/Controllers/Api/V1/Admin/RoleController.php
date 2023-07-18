@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Resources\V1\PermissionCollection;
@@ -14,6 +15,14 @@ use App\Models\Role;
 
 class RoleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-role")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-role")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-role")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-role")->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Resources\v1\RecruitmentCollection;
 use App\Http\Resources\v1\RecruitmentResource;
 use App\Models\Recruitment;
@@ -16,6 +17,12 @@ class RecruitmentController extends Controller
     public function __construct()
     {
         $this->model = new Recruitment();
+
+        $this->middleware(checkPermissions::class.":view-recruitment")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-recruitment")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-recruitment")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-recruitment")->only(['delete']);
+
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreSellerRequest;
 use App\Http\Resources\V1\SellerCollection;
 use App\Http\Resources\v1\SellerResource;
@@ -17,6 +18,12 @@ class SellerController extends Controller
     public function __construct()
     {
         $this->model = new Seller();
+
+        $this->middleware(checkPermissions::class.":view-seller")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-seller")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-seller")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-seller")->only(['delete']);
+
     }
 
     /**

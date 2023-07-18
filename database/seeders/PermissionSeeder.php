@@ -464,6 +464,30 @@ class PermissionSeeder extends Seeder
                 'path' => 'حذف نقش'
             ] ,
 
+            /*
+            basket Permissions
+            */
+
+            [
+                'title' => 'view-basket',
+                'path' => 'دیدن سبد خرید'
+            ] ,
+
+            [
+                'title' => 'create-basket',
+                'path' => 'ایجاد سبد خرید'
+            ] ,
+
+            [
+                'title' => 'update-basket',
+                'path' => 'ویرایش سبد خرید'
+            ] ,
+
+            [
+                'title' => 'delete-basket',
+                'path' => 'حذف سبد خرید'
+            ] ,
+
 
         ]);
     }

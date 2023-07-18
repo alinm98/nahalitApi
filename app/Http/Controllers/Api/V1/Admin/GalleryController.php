@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreGalleryRequest;
 use App\Http\Requests\UpdateGalleryRequest;
 use App\Http\Resources\V1\GalleryCollection;
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-gallery")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-gallery")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-gallery")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-gallery")->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *

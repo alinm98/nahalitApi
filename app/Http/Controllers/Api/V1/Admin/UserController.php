@@ -15,7 +15,13 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-role")->only(['index']);
+        $this->middleware(checkPermissions::class.":create-role")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-role")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-role")->only(['delete']);
+    }
 
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreWorkSampleRequest;
 use App\Http\Requests\UpdateWorkSampleRequest;
 use App\Http\Resources\v1\WorkSampleCollection;
@@ -18,6 +19,12 @@ class WorkSampleController extends Controller
     public function __construct()
     {
         $this->model = new WorkSample();
+
+        $this->middleware(checkPermissions::class.":view-work-sample")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-work-sample")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-work-sample")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-work-sample")->only(['delete']);
+
     }
 
     /**

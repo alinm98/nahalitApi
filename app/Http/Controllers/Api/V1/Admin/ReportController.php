@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
 use App\Http\Resources\v1\ReportCollection;
@@ -19,6 +20,12 @@ class ReportController extends Controller
     public function __construct()
     {
         $this->model = new Report();
+
+        $this->middleware(checkPermissions::class.":view-report")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-report")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-report")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-report")->only(['delete']);
+
     }
 
     /**

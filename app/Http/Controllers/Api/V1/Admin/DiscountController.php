@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreDiscountRequest;
 use App\Http\Requests\UpdateDiscountRequest;
 use App\Http\Resources\V1\Discountcollection;
@@ -12,6 +13,13 @@ use App\Models\Product;
 
 class DiscountController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-discount")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-discount")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-discount")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-discount")->only(['delete']);
+    }
 
     /**
      * Store a newly created resource in storage.

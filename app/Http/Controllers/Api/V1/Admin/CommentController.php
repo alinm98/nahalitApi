@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Resources\V1\CommentCollection;
 use App\Http\Resources\V1\CommentResource;
 use App\Http\Resources\V1\ProductResource;
@@ -18,6 +19,10 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->model = new Comment();
+        $this->middleware(checkPermissions::class.":view-comment")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-comment")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-comment")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-comment")->only(['delete']);
     }
 
     /**

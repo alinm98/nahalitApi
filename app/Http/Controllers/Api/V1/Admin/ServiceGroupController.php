@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreServiceGroupRequest;
 use App\Http\Requests\UpdateServiceGroupRequest;
 use App\Http\Resources\V1\ServiceGroupCollection;
@@ -13,6 +14,14 @@ use App\Models\ServiceGroup;
 
 class ServiceGroupController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-service-group")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-service-group")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-service-group")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-service-group")->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *

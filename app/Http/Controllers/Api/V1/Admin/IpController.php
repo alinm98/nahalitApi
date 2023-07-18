@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreIpRequest;
 use App\Http\Requests\UpdateIpRequest;
 use App\Http\Resources\V1\IpCollection;
@@ -11,6 +12,14 @@ use App\Models\Ip;
 
 class IpController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-ip")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-ip")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-ip")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-ip")->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *

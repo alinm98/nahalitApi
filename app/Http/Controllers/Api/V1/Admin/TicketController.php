@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Resources\v1\TicketCollection;
 use App\Http\Resources\v1\TicketResource;
@@ -17,6 +18,12 @@ class TicketController extends Controller
     public function __construct()
     {
         $this->model = new Ticket();
+
+        $this->middleware(checkPermissions::class.":view-ticket")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-ticket")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-ticket")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-ticket")->only(['delete']);
+
     }
 
     /**

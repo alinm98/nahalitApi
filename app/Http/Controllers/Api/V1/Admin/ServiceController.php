@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\V1\ServiceCollection;
@@ -11,6 +12,14 @@ use App\Models\Service;
 
 class ServiceController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-service")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-service")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-service")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-service")->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Resources\v1\OrderCollection;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -15,6 +16,12 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->model = new Order();
+
+        $this->middleware(checkPermissions::class.":view-order")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-order")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-order")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-order")->only(['delete']);
+
     }
 
     /**

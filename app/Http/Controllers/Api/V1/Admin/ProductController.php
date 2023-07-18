@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\V1\ProductCollection;
 use App\Http\Resources\V1\ProductResource;
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-product")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-product")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-product")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-product")->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
 use App\Http\Resources\V1\BlogCollection;
@@ -19,6 +20,10 @@ class BlogController extends Controller
     public function __construct()
     {
         $this->model = new Blog();
+        $this->middleware(checkPermissions::class.":view-blog")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-blog")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-blog")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-blog")->only(['delete']);
     }
 
     /**

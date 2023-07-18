@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\V1\CategoryCollection;
@@ -12,6 +13,13 @@ use http\Env\Response;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(checkPermissions::class.":view-category")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":create-category")->only(['store']);
+        $this->middleware(checkPermissions::class.":update-category")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-category")->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *
