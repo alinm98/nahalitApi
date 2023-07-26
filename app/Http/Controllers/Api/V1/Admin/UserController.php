@@ -18,7 +18,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(checkPermissions::class.":view-role")->only(['index']);
-        $this->middleware(checkPermissions::class.":create-role")->only(['store']);
+
         $this->middleware(checkPermissions::class.":update-role")->only(['update']);
         $this->middleware(checkPermissions::class.":delete-role")->only(['delete']);
     }
@@ -45,6 +45,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request): ?\Illuminate\Http\JsonResponse
     {
+        
         $user = User::query()->create([
             'first_name' => $request->get('first_name'),
             'last_name' => $request->get('last_name'),

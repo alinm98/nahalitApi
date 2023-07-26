@@ -16,7 +16,7 @@ class BasketController extends Controller
 
     public function __construct()
     {
-        $this->middleware(checkPermissions::class.":view-basket")->only(['index', 'show']);
+        $this->middleware(checkPermissions::class.":view-basket")->only(['index']);
         $this->middleware(checkPermissions::class.":create-basket")->only(['store']);
         $this->middleware(checkPermissions::class.":update-basket")->only(['update']);
         $this->middleware(checkPermissions::class.":delete-basket")->only(['delete']);

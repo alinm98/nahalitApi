@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\V1\Admin\AuthenticationController;
+
 use App\Http\Controllers\Api\V1\Admin\BasketController;
 use App\Http\Controllers\Api\V1\Admin\BlogController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
@@ -58,6 +58,19 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::post('users/login', [UserController::class, 'login']);
 
 
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::get('categories', [CategoryController::class, 'show']);
+
+    Route::get('products', [ProductController::class, 'index']);
+    Route::get('products', [ProductController::class, 'show']);
+
+    Route::get('baskets', [BasketController::class, 'show']);
+
+
+
+
+
+
     //product properties
     Route::get('products/{product}/properties',[ProductPropertyController::class,'index']);
     Route::post('products/{product}/properties',[ProductPropertyController::class,'store']);
@@ -89,8 +102,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Admin',
     'middleware' => 'auth:sanctum'], function (){
 
-    Route::apiResource('categories' , CategoryController::class);
-    Route::apiResource('products' , ProductController::class);
+    Route::apiResource('categories' , CategoryController::class)->except('show', 'index');
+    Route::apiResource('products' , ProductController::class)->except('show', 'index');
     Route::apiResource('products.discounts', DiscountController::class);
     Route::apiResource('propertiesGroup',PropertyGroupController::class);
     Route::apiResource('properties',PropertyController::class);
@@ -98,8 +111,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('services', ServiceController::class);
     Route::apiResource('ips', IpController::class);
     Route::apiResource('roles' , RoleController::class);
-    Route::apiResource('baskets', BasketController::class)->except('update');
-    Route::apiResource('users', UserController::class);
+    Route::apiResource('baskets', BasketController::class)->except('update', 'show');
+    Route::apiResource('users', UserController::class)->except('store');
 
     Route::get('users/detail', [UserController::class, 'show']);
     Route::post('users/logout', [UserController::class, 'logout']);
