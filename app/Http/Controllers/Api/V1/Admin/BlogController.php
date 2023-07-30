@@ -180,4 +180,10 @@ class BlogController extends Controller
         ], 200);
 
     }
+
+    public function search($value): \Illuminate\Database\Eloquent\Collection|array
+    {
+        $blogs = new Blog();
+        return $blogs->search($value);
+    }
 }

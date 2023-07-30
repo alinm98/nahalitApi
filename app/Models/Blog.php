@@ -27,4 +27,9 @@ class Blog extends Model
     }
     /* User Blogs Relationships */
 
+    public function search($parameter): \Illuminate\Database\Eloquent\Collection|array
+    {
+        return Blog::query()->where('title' ,'like', '%'.$parameter.'%')->get();
+    }
+
 }

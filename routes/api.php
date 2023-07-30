@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\ServiceGroupController;
 use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
+use App\Http\Controllers\Api\V1\Admin\VisitController;
 use App\Http\Controllers\Api\V1\Admin\WorkSampleController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,9 +51,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Admin'], function (){
 
+    Route::apiResource('/visits', VisitController::class)->only('index', 'store');
+    Route::get('/visits/counts', [VisitController::class, 'allVisits']);
+
 
 
     Route::get('products/search/{value}', [ProductController::class, 'search']);
+    Route::get('blogs/search/{value}', [BlogController::class, 'search']);
+
+
     Route::post('users/register', [UserController::class, 'store']);
 
     Route::post('users/login', [UserController::class, 'login']);

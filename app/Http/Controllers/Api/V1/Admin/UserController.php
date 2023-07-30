@@ -45,7 +45,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request): ?\Illuminate\Http\JsonResponse
     {
-        
+
         $user = User::query()->create([
             'first_name' => $request->get('first_name'),
             'last_name' => $request->get('last_name'),
@@ -87,6 +87,7 @@ class UserController extends Controller
 
     public function login(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
+
         $user = User::query()->where('mobile', $request->get('mobile'))->firstOrFail();
 
         if (!Hash::check($request->get('password'), $user->password)) {
