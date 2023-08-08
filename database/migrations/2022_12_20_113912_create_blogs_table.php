@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('image')->default('http://localhost/Admin/Images/without-thumbnail.jpg');
-            $table->string('slug');
             $table->text('body');
             $table->boolean('is_active');
 
