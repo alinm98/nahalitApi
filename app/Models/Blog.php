@@ -16,6 +16,7 @@ class Blog extends Model
         'image',
         'body',
         'user_id',
+        'is_active'
     ];
 
     /* User Blogs Relationships */

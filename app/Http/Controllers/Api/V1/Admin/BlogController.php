@@ -20,7 +20,7 @@ class BlogController extends Controller
     public function __construct()
     {
         $this->model = new Blog();
-        $this->middleware(checkPermissions::class.":view-blog")->only(['index', 'show']);
+        //$this->middleware(checkPermissions::class.":view-blog")->only(['index', 'show']);
         $this->middleware(checkPermissions::class.":create-blog")->only(['store']);
         $this->middleware(checkPermissions::class.":update-blog")->only(['update']);
         $this->middleware(checkPermissions::class.":delete-blog")->only(['delete']);
@@ -31,7 +31,7 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): \Illuminate\Http\Response|BlogCollection
     {
 
         /* Get All Blogs */
@@ -48,7 +48,7 @@ class BlogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBlogRequest $request)
+    public function store(StoreBlogRequest $request): \Illuminate\Http\Response|BlogResource
     {
 
         $data = $request->all();
@@ -57,7 +57,7 @@ class BlogController extends Controller
         if($request->hasFile('image')){
             $file = $request->file('image');
 
-            $path = $file->store('public/Blogs/Images/');
+            $path = $file->store('public/images/blogs');
 
             $data['image'] = $path;
         }
@@ -85,7 +85,7 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Blog $blog)
+    public function show(Blog $blog): \Illuminate\Http\Response|BlogResource
     {
 
         return new BlogResource($blog);
@@ -99,7 +99,7 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBlogRequest $request, Blog $blog)
+    public function update(UpdateBlogRequest $request, Blog $blog): \Illuminate\Http\Response
     {
 
         $newData = $request->all();
@@ -158,7 +158,7 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Blog $blog)
+    public function destroy(Blog $blog): \Illuminate\Http\Response
     {
 
         /* Delete Blog */

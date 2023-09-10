@@ -19,7 +19,6 @@ class RecruitmentController extends Controller
         $this->model = new Recruitment();
 
         $this->middleware(checkPermissions::class.":view-recruitment")->only(['index', 'show']);
-        $this->middleware(checkPermissions::class.":create-recruitment")->only(['store']);
         $this->middleware(checkPermissions::class.":update-recruitment")->only(['update']);
         $this->middleware(checkPermissions::class.":delete-recruitment")->only(['delete']);
 
@@ -50,6 +49,28 @@ class RecruitmentController extends Controller
     public function show(Recruitment $recruitment):RecruitmentResource
     {
         return new RecruitmentResource($recruitment);
+    }
+
+    public function store(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $recruitment = Recruitment::query()->create([
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'birthday' => $request->get('birthday'),
+            'martial_status' => $request->get('martial_status'),
+            'address' => $request->get('address'),
+            'phone' => $request->get('phone'),
+            'activity' => $request->get('activity'),
+            'eduction_status' => $request->get('eduction_status'),
+            'ability_description' => $request->get('ability_description'),
+            'shaba_number' => $request->get('shaba_number'),
+            'status' => $request->get('status'),
+        ]);
+
+        return Response()->json([
+            'massage' => 'فرم شما با موفقیت ثبت شد',
+            'data' => $recruitment
+        ], 201);
     }
 
 }

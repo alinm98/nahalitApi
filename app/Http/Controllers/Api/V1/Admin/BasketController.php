@@ -40,6 +40,16 @@ class BasketController extends Controller
      */
     public function store(StoreBasketRequest $request): \Illuminate\Http\JsonResponse
     {
+        $user = User::query()->where('id', $request->get('user_id'))->firstOrFail();
+        $baskets = $user->baskets->all();
+        
+        foreach($baskets as $basket){
+            if ($basket->product_id == $request->get('product_id')){
+                return Response()->json([
+                    'massage' => 'این محصول قبلا اضافه شده است'
+                ], 403);
+            }
+        }
         $basket = Basket::query()->create([
             'user_id' => $request->get('user_id'),
             'product_id' => $request->get('product_id'),

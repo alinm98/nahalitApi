@@ -29,8 +29,8 @@ class UpdateUserRequest extends FormRequest
             'username' => ['required', 'min:3', 'max:60'],
             'mobile' => ['required', 'max:11', 'min:11'],
             'email' => ['required', 'email'],
-            'code_meli' => ['integer', 'nullable', 'min:1', 'max:10'],
-            'card_number' => ['integer', 'nullable', 'min:16', 'max:16'],
+            'code_meli' => ['integer', 'nullable', 'min:1', 'max:9999999999'],
+            'card_number' => ['nullable', 'min:16', 'max:16'],
         ];
     }
 }

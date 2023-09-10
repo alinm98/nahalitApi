@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Category;
-use App\Models\user;
+use App\Models\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -88,6 +89,7 @@ class UserController extends Controller
     public function login(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
 
+
         $user = User::query()->where('mobile', $request->get('mobile'))->firstOrFail();
 
         if (!Hash::check($request->get('password'), $user->password)) {
@@ -156,25 +158,34 @@ class UserController extends Controller
             ], 400);
         }
 
-        //check for unique code_meli
-        $code_meliExist = User::query()->where('code_meli', $request->get('code_meli'))
-            ->where('id', '!=', $user->id)->exists();
 
-        if ($code_meliExist) {
-            return Response()->json([
-                'error' => 'این کد ملی اکنون وچود دارد'
-            ], 400);
+        $code_meli = $request->get('code_meli');
+        if ($code_meli){
+            //check for unique code_meli
+            $code_meliExist = User::query()->where('code_meli', $request->get('code_meli'))
+                ->where('id', '!=', $user->id)->exists();
+
+            if ($code_meliExist) {
+                return Response()->json([
+                    'error' => 'این کد ملی اکنون وچود دارد'
+                ], 400);
+            }
         }
 
-        //check for unique card_number
-        $card_numberExist = User::query()->where('card_number', $request->get('card_number'))
-            ->where('id', '!=', $user->id)->exists();
+        $card_number = $request->get('card_number');
+        if ($card_number){
+            //check for unique card_number
+            $card_numberExist = User::query()->where('card_number', $request->get('card_number'))
+                ->where('id', '!=', $user->id)->exists();
 
-        if ($card_numberExist) {
-            return Response()->json([
-                'error' => 'این شماره کارت اکنون وچود دارد'
-            ], 400);
+            if ($card_numberExist) {
+                return Response()->json([
+                    'error' => 'این شماره کارت اکنون وچود دارد'
+                ], 400);
+            }
         }
+
+
 
 
         $user->update([
@@ -185,11 +196,40 @@ class UserController extends Controller
             'password' => bcrypt($request->get('password')),
             'email' => $request->get('email'),
             'role_id' => $request->get('role_id'),
+            'code_meli' => $request->get('code_meli'),
+            'card_number' => $request->get('card_number'),
         ]);
 
         return Response()->json([
             'massage' => 'به روزرسانی با موفقیت انجام شد',
         ], 200);
+
+    }
+
+
+    public function changePassword(ChangePasswordRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $user = auth()->user();
+        $password = $user->password;
+        if (!Hash::check($request->get('last_password'), $password)){
+            return Response()->json([
+                'massage' => 'رمز قبلی وارد شده اشتباه است',
+            ],401);
+        }
+
+        $user->update([
+            'password' => bcrypt($request->get('new_password'))
+        ]);
+
+        return Response()->json([
+            'massage' => 'رمز شما با موفقیت تغییر پیدا کرد'
+        ],200);
+
+    }
+
+    public function getUser(User $user){
+
+        return Response()->json($user, 200);
 
     }
 

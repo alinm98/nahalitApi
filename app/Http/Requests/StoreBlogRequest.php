@@ -25,10 +25,10 @@ class StoreBlogRequest extends FormRequest
     {
         return [
             'title' => ['required', 'max:200'],
-            'image' => ['required'],
-            'slug' => ['required', 'max:150'],
+            'image' => ['required', 'mimes:png,jpg,peg,mpeg', 'min:16', 'max:2048'],
             'body' => ['required', 'min:20'],
-            'user_id' => ['nullable', 'exists:users,id']
+            'user_id' => ['nullable', 'exists:users,id'],
+            'is_active' => ['required', 'boolean']
         ];
     }
 
