@@ -58,8 +58,9 @@ class BlogController extends Controller
             $file = $request->file('image');
 
             $path = $file->store('public/images/blogs');
+            $image = str_replace('public', '/storage', $path);
 
-            $data['image'] = $path;
+            $data['image'] = url($image);
         }
         /* Store Image */
 
@@ -108,17 +109,18 @@ class BlogController extends Controller
         if($request->hasFile('image')){
 
             /* Delete Old Image */
-            if(Storage::exists('public/Blogs/Images/' . $blog->image)){
-                Storage::delete('public/Blogs/Images/' . $blog->image);
+            if(Storage::exists('public/images/blogs/' . $blog->image)){
+                Storage::delete('public/images/blogs/' . $blog->image);
             }
             /* Delete Old Image */
 
             /* Store New Image */
             $file = $request->file('image');
 
-            $path = $file->store('public/Blogs/Images/');
+            $path = $file->store('public/images/blogs');
+            $image = str_replace('public', '/storage', $path);
 
-            $newData['image'] = $path;
+            $newData['image'] = url($image);
             /* Store New Image */
 
         }

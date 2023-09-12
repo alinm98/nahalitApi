@@ -43,9 +43,11 @@ class GalleryController extends Controller
     public function store(StoreGalleryRequest $request, Product $product): GalleryResource
     {
         $image = $request->file('image')->store('/public/images/products/galleries');
+        $image = str_replace('public', '/storage', $image);
+
         $gallery = Gallery::query()->create([
             'title' => $request->get('title'),
-            'image' => $image,
+            'image' => url($image),
             'product_id' => $product->id,
         ]);
 

@@ -42,12 +42,14 @@ class ProductController extends Controller
     {
         //store image in public
         $image = $request->file('image')->store('public/images/products');
+        $image = str_replace('public', '/storage', $image);
+
 
         //store product in database
         $product = Product::query()->create([
             'title' => $request->get('title'),
             'price' => $request->get('price'),
-            'image' => $image,
+            'image' => url($image),
             'description' => $request->get('description'),
             'category_id' => $request->get('category_id'),
         ]);
@@ -81,6 +83,7 @@ class ProductController extends Controller
         if ($request->file('image') != null) {
             Storage::delete($image);
             $image = $request->file('image')->store('public/images/products');
+            $image = str_replace('public', '/storage', $image);
         }
 
         //check for unique title
@@ -97,7 +100,7 @@ class ProductController extends Controller
         $update = $product->update([
             'title' => $request->get('title'),
             'price' => $request->get('price'),
-            'image' => $image,
+            'image' => url($image),
             'description' => $request->get('description'),
             'category_id' => $request->get('category_id'),
         ]);
