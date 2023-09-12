@@ -55,6 +55,7 @@ class UserController extends Controller
             'password' => bcrypt($request->get('password')),
             'email' => $request->get('email'),
             'role_id' => 2,
+            'mobile_verify' => 0,
         ]);
 
         $token = $user->createToken($user->username)->plainTextToken;

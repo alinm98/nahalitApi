@@ -26,7 +26,8 @@ class User extends Authenticatable
         'password',
         'role_id',
         'code_meli',
-        'card_number'
+        'card_number',
+        'mobile_verify'
     ];
 
     /**

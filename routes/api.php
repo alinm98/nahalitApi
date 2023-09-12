@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\V1\Admin\RoleController;
 use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\ServiceGroupController;
+use App\Http\Controllers\Api\V1\Admin\SmsController;
 use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
 use App\Http\Controllers\Api\V1\Admin\VisitController;
@@ -102,6 +103,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
 
 
+
 });
 
 
@@ -153,4 +155,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::delete('coupons/{id}', [CouponController::class, 'destroy']);
 
     Route::post('/users/changePassword',[UserController::class,'changePassword']);
+
+    Route::post('sms/sendVerify',[SmsController::class,'sendSms']);
+    Route::post('sms/verify',[SmsController::class,'verify']);
 });
