@@ -97,6 +97,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
 
     Route::apiResource('tickets', TicketController::class);
+    Route::post('users/doChangePassword', [UserController::class,'doChangePassword']);
 
 
 

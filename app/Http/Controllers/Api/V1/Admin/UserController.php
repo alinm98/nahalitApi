@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\checkPermissions;
+use App\Http\Requests\doChangePasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\StoreUserRequest;
@@ -228,9 +229,24 @@ class UserController extends Controller
 
     }
 
-    public function getUser(User $user){
+    public function getUser(User $user): \Illuminate\Http\JsonResponse
+    {
 
         return Response()->json($user, 200);
+
+    }
+
+    public function doChangePassword(doChangePasswordRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $user = User::query()->where('mobile', $request->get('mobile'));
+
+        $user->update([
+            'password' => bcrypt($request->get('new_password'))
+        ]);
+
+        return Response()->json([
+            'massage' => 'رمز شما با موفقیت تغییر پیدا کرد'
+        ],200);
 
     }
 
