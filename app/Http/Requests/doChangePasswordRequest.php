@@ -24,7 +24,7 @@ class doChangePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mobile' => ['required', 'exists:user,mobile'],
+            'mobile' => ['required', 'exists:users,mobile'],
             'new_password' => ['required', 'confirmed', 'min:8', 'max:32']
         ];
     }
