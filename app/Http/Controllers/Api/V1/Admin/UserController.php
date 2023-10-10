@@ -83,7 +83,6 @@ class UserController extends Controller
         }
         return Response()->json([
             'user' => auth()->user(),
-            'token' => auth()->user()->tokens
         ], 200);
 
     }
@@ -186,8 +185,6 @@ class UserController extends Controller
                 ], 400);
             }
         }
-
-
 
 
         $user->update([

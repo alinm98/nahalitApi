@@ -99,7 +99,7 @@ class SmsController extends Controller
             'mobile' => auth()->user()->mobile,
             'code' => bcrypt($code),
         ]);
-        Log::info($code);
+
 
         return Response()->json([
             'massage' => 'کد تایید ارسال شد. لطفا تا دو دقیقه دیگر کد تایید را وارد کنید.'

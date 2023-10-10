@@ -10,12 +10,13 @@ use App\Http\Resources\V1\Discountcollection;
 use App\Http\Resources\V1\DiscountResource;
 use App\Models\Discount;
 use App\Models\Product;
+use http\Env\Response;
 
 class DiscountController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(checkPermissions::class.":view-discount")->only(['index', 'show']);
+        //$this->middleware(checkPermissions::class.":view-discount")->only(['index', 'show']);
         $this->middleware(checkPermissions::class.":create-discount")->only(['store']);
         $this->middleware(checkPermissions::class.":update-discount")->only(['update']);
         $this->middleware(checkPermissions::class.":delete-discount")->only(['delete']);
@@ -27,11 +28,12 @@ class DiscountController extends Controller
      * @param \App\Http\Requests\StoreDiscountRequest $request
      * @return DiscountResource
      */
-    public function store(StoreDiscountRequest $request, Product $product): DiscountResource
+    public function store(StoreDiscountRequest $request, $product_id): DiscountResource
     {
+
         //store product in database
         $store = Discount::query()->create([
-            'product_id' => $product->id,
+            'product_id' => $product_id,
             'value' => $request->get('value'),
         ]);
         //return discount
@@ -42,10 +44,16 @@ class DiscountController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Discount $discount
-     * @return DiscountResource
+     *
      */
-    public function show(Product $product, Discount $discount): DiscountResource
+    public function show($product_id)
     {
+        $product = Product::query()->where('id', $product_id)->firstOrFail();
+        if (!$product->discount){
+            return Response()->json(null,404);
+        }
+
+        $discount = $product->discount;
         return new DiscountResource($discount);
     }
 
@@ -57,8 +65,15 @@ class DiscountController extends Controller
      * @param \App\Models\Discount $discount
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateDiscountRequest $request, Product $product, Discount $discount): \Illuminate\Http\JsonResponse
+    public function update(UpdateDiscountRequest $request,$product_id): \Illuminate\Http\JsonResponse
     {
+        $product = Product::query()->where('id', $product_id)->firstOrFail();
+        if (!$product->discount){
+            return Response()->json(null,404);
+        }
+
+        $discount = $product->discount;
+
         //update discount in database
         $update = $discount->update([
             'value' => $request->get('value')
@@ -72,7 +87,7 @@ class DiscountController extends Controller
         }
 
         return response()->json([
-            'massage' => 'discount updated successfully'
+            'massage' => 'تخفیف محصول با موفقیت ویرایش شد'
         ], 200);
     }
 
@@ -82,8 +97,9 @@ class DiscountController extends Controller
      * @param \App\Models\Discount $discount
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Product $product, Discount $discount): \Illuminate\Http\JsonResponse
+    public function destroy($product_id): \Illuminate\Http\JsonResponse
     {
+        $discount = Product::query()->where('id', $product_id)->firstOrFail()->discount;
         //delete discount from database
         $delete = $discount->delete();
 
@@ -95,7 +111,7 @@ class DiscountController extends Controller
         }
 
         return Response()->json([
-            'massage' => 'discount deleted successfully'
+            'massage' => 'تخفیف با موفقیت حذق شد'
         ], 200);
     }
 }

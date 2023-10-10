@@ -26,7 +26,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
 
-            $table->string('file');
+            //$table->string('file');
             $table->boolean('confirm');
             $table->enum('status', [
                 'answered',

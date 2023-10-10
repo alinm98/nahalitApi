@@ -57,20 +57,13 @@ class BlogController extends Controller
         if($request->hasFile('image')){
             $file = $request->file('image');
 
-            $path = $file->store('public/images/blogs');
+            $path = $file->store('public/images/products');
             $image = str_replace('public', '/storage', $path);
 
             $data['image'] = url($image);
         }
         /* Store Image */
 
-        /* Validate Is_Active Field */
-        if($request->has('is_active')){
-            $data['is_active'] = true;
-        }else{
-            $data['is_active'] = false;
-        }
-        /* Validate Is_Active Field */
 
         /* Store Blog */
         $blog = $this->model->create($data);
@@ -93,66 +86,53 @@ class BlogController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateBlogRequest $request, Blog $blog): \Illuminate\Http\Response
-    {
 
-        $newData = $request->all();
-
-        /* Store Image */
-        if($request->hasFile('image')){
-
-            /* Delete Old Image */
-            if(Storage::exists('public/images/blogs/' . $blog->image)){
-                Storage::delete('public/images/blogs/' . $blog->image);
-            }
-            /* Delete Old Image */
-
-            /* Store New Image */
-            $file = $request->file('image');
-
-            $path = $file->store('public/images/blogs');
-            $image = str_replace('public', '/storage', $path);
-
-            $newData['image'] = url($image);
-            /* Store New Image */
-
-        }
-        /* Store Image */
-
-        /* Validate Is_Active Field */
-        if($request->has('is_active')){
-            $newData['is_acitve'] = true;
-        }else{
-            $newData['is_acitve'] = false;
-        }
-        /* Validate Is_Active Field */
-
-        /* Update Blog */
-        $res = $blog->update($newData);
-        /* Update Blog */
-
-        /* Check Blog Updated */
-        if(!$res){
-            return response([
-                'result' => false,
-                'message' => 'خطا در انحام عملیات'
-            ], 500);
-        }
-        /* Check Blog Updated */
-
-        return response([
-            'result' => true,
-            'message' => 'با موفقیت اپدیت شد'
-        ], 200);
-
-    }
+//    public function update(Request $request, Blog $blog)
+//    {
+//
+//
+//        $newData = $request->all();
+//
+//        /* Store Image */
+//        if($request->hasFile('image')){
+//
+//            /* Delete Old Image */
+//            if(Storage::exists('public/images/products' . $blog->image)){
+//                Storage::delete('public/images/products' . $blog->image);
+//            }
+//            /* Delete Old Image */
+//
+//            /* Store New Image */
+//            $file = $request->file('image');
+//
+//            $path = $file->store('public/images/products');
+//            $image = str_replace('public', '/storage', $path);
+//
+//            $newData['image'] = url($image);
+//            /* Store New Image */
+//
+//        }
+//        /* Store Image */
+//
+//
+//
+//        /* Update Blog */
+//        $data = $blog->update([
+//            'title' => $newData['title'],
+//            'image' => $newData['image'],
+//            'body' => $newData['body'],
+//            'user_id' => $newData['user_id'],
+//            'is_active' => $newData['is_active'],
+//        ]);
+//        /* Update Blog */
+//
+//
+//        return response([
+//            'result' => true,
+//            'message' => 'با موفقیت اپدیت شد'
+//        ], 200);
+//
+//    }
 
     /**
      * Remove the specified resource from storage.
@@ -187,5 +167,51 @@ class BlogController extends Controller
     {
         $blogs = new Blog();
         return $blogs->search($value);
+    }
+
+
+
+    public function update(UpdateBlogRequest $request, Blog $blog): \Illuminate\Http\Response|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+    {
+        $newData = $request->all();
+
+        /* Store Image */
+        if($request->hasFile('image')){
+
+            /* Delete Old Image */
+            if(Storage::exists('public/images/products' . $blog->image)){
+                Storage::delete('public/images/products' . $blog->image);
+            }
+            /* Delete Old Image */
+
+            /* Store New Image */
+            $file = $request->file('image');
+
+            $path = $file->store('public/images/products');
+            $image = str_replace('public', '/storage', $path);
+
+            $newData['image'] = url($image);
+            /* Store New Image */
+
+        }
+        /* Store Image */
+
+
+
+        /* Update Blog */
+        $data = $blog->update([
+            'title' => $newData['title'],
+            'image' => $newData['image'],
+            'body' => $newData['body'],
+            'user_id' => $newData['user_id'],
+            'is_active' => $newData['is_active'],
+        ]);
+        /* Update Blog */
+
+
+        return response([
+            'result' => true,
+            'message' => 'با موفقیت اپدیت شد'
+        ], 200);
     }
 }

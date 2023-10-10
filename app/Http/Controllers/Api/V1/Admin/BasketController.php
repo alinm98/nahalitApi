@@ -42,7 +42,7 @@ class BasketController extends Controller
     {
         $user = User::query()->where('id', $request->get('user_id'))->firstOrFail();
         $baskets = $user->baskets->all();
-        
+
         foreach($baskets as $basket){
             if ($basket->product_id == $request->get('product_id')){
                 return Response()->json([
@@ -91,5 +91,18 @@ class BasketController extends Controller
         return response()->json([
             'massage' => 'محصول مورد نظر با موفقیت از سبد خرید حذف شد',
         ]);
+    }
+
+    public function destroyAll($id): \Illuminate\Http\JsonResponse
+    {
+        $user = $user = User::query()->where('id' , $id)->firstOrFail();
+        $baskets = $user->basket;
+        foreach ($baskets as $basket){
+            $basket->delete();
+        }
+
+        return Response()->json([
+            'massage' => 'همه محصولات در سبد خرید پاک شد'
+        ],200);
     }
 }

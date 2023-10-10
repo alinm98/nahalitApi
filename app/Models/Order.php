@@ -13,16 +13,20 @@ class Order extends Model
 
     protected $fillable = [
         'status',
-        'confirm',
         'total',
         'user_id',
     ];
 
     /* User Orders Relation */
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
     /* User Orders Relation */
+
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
+    }
 
 }

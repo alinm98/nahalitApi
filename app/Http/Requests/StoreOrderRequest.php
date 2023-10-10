@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSellerRequest extends FormRequest
+class StoreOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,19 +23,12 @@ class StoreSellerRequest extends FormRequest
      */
     public function rules(): array
     {
+        //dd($this->toArray());
         return [
-            'card_number' => ['required', 'size:16'],
-            'code_meli' => ['required', 'size:10'],
+            'total' => ['required', 'integer'],
             'user_id' => ['required', 'exists:users,id'],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'required' => 'وارد کردن این فیلد الزمی میباشد',
-            'size' => 'تعداد کاراکتر ها باید :size باشد',
-            'user_id.exists' => 'فروشنده پیدا نشد'
+            'products' => ['array', 'required'],
+            //'products.*' => ['exists:products,id']
         ];
     }
 }

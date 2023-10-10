@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\checkPermissions;
-use App\Http\Resources\v1\OrderCollection;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Resources\V1\OrderCollection;
+use App\Http\Resources\V1\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -29,26 +31,39 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request): \Illuminate\Http\Response|OrderCollection
+    public function index(): \Illuminate\Http\Response|OrderCollection
+    {
+        /* Return Response */
+        return new OrderCollection(Order::all());
+        /* Return Response */
+
+    }
+
+    public function store(StoreOrderRequest $request): \Illuminate\Http\JsonResponse
     {
 
-        $sent = false;
-        /* Determine Sent Status */
-        if($request->has('sent')){
-            if($request->input('sent') == 'true'){
-                $sent = true;
-            }
-        };
-        /* Determine Sent Status */
+        //dd($request->get('products'));
+        $order = Order::query()->create([
+            'status' => null,
+            'total' => $request->get('total'),
+            'user_id' => $request->get('user_id')
+        ]);
 
-        /* Get All Orders */
-        $orders = $this->model->where('status', $sent ? 'sent' : 'notsent')->get();
-        /* Get All Orders */
+        $products = $order->product()->attach($request->get('products'));
 
-        /* Return Response */
-        return new OrderCollection($orders);
-        /* Return Response */
 
+
+        return Response()->json([
+            'order' => $order,
+        ],201);
+    }
+
+    public function show(Order $order): \Illuminate\Http\JsonResponse
+    {
+        return Response()->json([
+            'order' => new OrderResource($order),
+            'products' => $order->product,
+        ],200);
     }
 
 
@@ -58,77 +73,17 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request): \Illuminate\Http\Response
+    public function destroy(Order $order): \Illuminate\Http\Response
     {
+        $order->product()->detach();
 
-        $sent = false;
-        /* Determine Sent Status */
-        if($request->has('sent')){
-            if($request->input('sent') == 'true'){
-                $sent = true;
-            }
-        };
-        /* Determine Sent Status */
-
-        $orders = $this->model->where('status', $sent ? 'sent' : 'notsent')->get();
-
-        foreach ($orders as $order){
-            $res = $order->delete();
-            if(!$res){
-                return response([
-                    'result' => false,
-                    'message' => 'خطا در انجام عملیات'
-                ], 500);
-            }
-        }
+        $order->delete();
 
         return response([
-            'result' => true,
-            'message' => 'با موفقیت انجام شد'
+            'message' => 'حذف با موفقیت انجام شد'
         ], 200);
 
     }
 
-    /**
-     * Confirm Orders.
-     *
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function confirmOrder($id): \Illuminate\Http\Response
-    {
-        $order = $this->model->where('id', $id)->first();
 
-        /* Check Order Exists */
-        if(!$order){
-            return response([
-                'result' => false,
-                'message' => 'سفارش پیدا نشد'
-            ], 404);
-        }
-        /* Check Order Exists */
-
-        /* Update Order */
-        $res = $order->update([
-            'confirm' => true
-        ]);
-        /* Update Order */
-
-        /* Check Order Updated */
-        if(!$res){
-            return response([
-                'result' => false,
-                'message' => 'خطا در انجام عملیات'
-            ], 500);
-        }
-        /* Check Order Updated */
-
-        /* Return Response */
-        return response([
-            'result' => true,
-            'message' => 'با موفقیت تایید شد'
-        ], 200);
-        /* Return Response */
-
-    }
 }

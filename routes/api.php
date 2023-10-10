@@ -72,7 +72,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::get('products', [ProductController::class, 'index']);
     Route::get('products/{product}', [ProductController::class, 'show']);
 
-    Route::get('baskets', [BasketController::class, 'show']);
+    Route::get('baskets/{id}', [BasketController::class, 'show']);
 
 
 
@@ -91,15 +91,16 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
 
 
-    Route::get('orders', [OrderController::class, 'index']);
-    Route::get('orders/{order}', [OrderController::class, 'show']);
-    Route::delete('orders', [OrderController::class, 'destroy']);
+
 
 
     Route::apiResource('tickets', TicketController::class);
     Route::post('users/doChangePassword', [UserController::class,'doChangePassword']);
 
+    Route::get('blogs',[BlogController::class,'index']);
+    Route::get('blogs/{blog}',[BlogController::class,'show']);
 
+    Route::get('discounts/{product_id}',[DiscountController::class,'show']);
 
 
 
@@ -115,7 +116,10 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
     Route::apiResource('categories' , CategoryController::class)->except('index', 'show');
     Route::apiResource('products' , ProductController::class)->except('index', 'show');
-    Route::apiResource('products.discounts', DiscountController::class);
+    //Route::apiResource('products.discounts', DiscountController::class);
+    Route::post('discounts/{product_id}',[DiscountController::class,'store']);
+    Route::delete('discounts/{product_id}',[DiscountController::class,'destroy']);
+    Route::patch('discounts/{product_id}',[DiscountController::class,'update']);
     Route::apiResource('propertiesGroup',PropertyGroupController::class);
     Route::apiResource('properties',PropertyController::class);
     Route::apiResource('serviceGroups' , ServiceGroupController::class);
@@ -125,20 +129,28 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('baskets', BasketController::class)->except('update', 'show');
     Route::apiResource('users', UserController::class)->except('store');
 
+    Route::delete('baskets/destroyAll/{id}',[BasketController::class,'destroyAll']);
+
     Route::get('users/detail', [UserController::class, 'show']);
     Route::post('users/logout', [UserController::class, 'logout']);
 
     Route::post('/galleries/{product}' , [GalleryController::class,'store']);
     Route::delete('/galleries/{gallery}' , [GalleryController::class,'destroy']);
 
-    Route::apiResource('blogs', BlogController::class);
+    Route::apiResource('blogs', BlogController::class)->except('show', 'index', 'update');
+    Route::post('blogs/{blog}',[BlogController::class,'update']);
 
     Route::apiResource('sellers', SellerController::class);
+
+    Route::get('orders', [OrderController::class, 'index']);
+    Route::get('orders/{order}', [OrderController::class, 'show']);
+    Route::delete('orders/{order}', [OrderController::class, 'destroy']);
     Route::put('orders/confirm/{id}', [OrderController::class, 'confirmOrder']);
+    Route::post('orders', [OrderController::class, 'store']);
 
     Route::apiResource('reports', ReportController::class)->only(['index', 'store', 'update']);
 
-    Route::apiResource('projects', ProjectController::class)->only(['index']);
+    Route::apiResource('projects', ProjectController::class)->except(['destroy']);
 
     Route::apiResource('work-sample', WorkSampleController::class)->only(['index', 'store', 'update', 'destroy']);
 

@@ -33,7 +33,7 @@ class Product extends Model
 
 
     /* Seller Products Relationships */
-    public function seller()
+    public function seller(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Seller::class, 'seller_id');
     }
@@ -44,6 +44,16 @@ class Product extends Model
         return $this->belongsToMany(Property::class)
             ->withPivot(['value'])
             ->withTimestamps();
+    }
+
+    public function discount(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Discount::class);
+    }
+
+    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Order::class);
     }
 
 

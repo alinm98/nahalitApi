@@ -46,10 +46,16 @@ class SellerController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
      */
-    public function store(StoreSellerRequest $request):SellerResource
+    public function store(StoreSellerRequest $request): \Illuminate\Http\JsonResponse
     {
+        $sellerExists = Seller::query()->where('user_id',$request->get('user_id'))->firstOrFail()->exists();
+        if ($sellerExists){
+            return Response()->json([
+                'massage' => 'این کاربر قبلا به عنوان فروشنده ثبت شده است'
+            ],403);
+        }
         $data = $request->all();
 
         /* Validate Is_Active Field */
@@ -64,7 +70,9 @@ class SellerController extends Controller
         $seller = $this->model->create($data);
         /* Store Seller */
 
-        return new SellerResource($seller);
+        return Response()->json([
+            'seller' => new SellerResource($seller)
+        ],403);
     }
 
     /**

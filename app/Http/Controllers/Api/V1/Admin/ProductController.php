@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\V1\Discountcollection;
 use App\Http\Resources\V1\ProductCollection;
 use App\Http\Resources\V1\ProductResource;
 use App\Models\Category;
+use App\Models\Discount;
 use App\Models\Product;
 use http\Env\Response;
 use Illuminate\Support\Facades\Storage;
@@ -24,11 +26,14 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return ProductCollection
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(): ProductCollection
+    public function index(): \Illuminate\Http\JsonResponse
     {
-        return new ProductCollection(Product::all());
+        return Response()->json([
+            'products' => new ProductCollection(Product::all()),
+            'discounts' => new Discountcollection(Discount::all())
+        ]);
     }
 
 
@@ -61,11 +66,15 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Product $product
-     * @return ProductResource
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Product $product): ProductResource
+    public function show(Product $product): \Illuminate\Http\JsonResponse
     {
-        return new ProductResource($product);
+        return Response()->json([
+            'product' => new ProductResource($product),
+            'discount' => $product->discount,
+            'comments' => $product->comments,
+        ]);
     }
 
 

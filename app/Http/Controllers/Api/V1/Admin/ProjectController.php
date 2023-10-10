@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\api\v1\admin;
+namespace App\Http\Controllers\api\V1\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\checkPermissions;
-use App\Http\Resources\v1\ProjectCollection;
+use App\Http\Resources\V1\ProjectCollection;
 use App\Models\Project;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -38,5 +39,30 @@ class ProjectController extends Controller
 
         return new ProjectCollection($projects);
 
+    }
+
+    public function store(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $data = $request->all();
+
+        $project = $this->model->create($data);
+
+        return Response()->json($project,201);
+    }
+
+    public function update(Request $request,Project $project): \Illuminate\Http\JsonResponse
+    {
+        $data = $request->all();
+
+        $res = $project->update($data);
+
+        return Response()->json([
+            'پروزه با موفقیت بروزرسانی شد'
+        ],201);
+    }
+
+    public function show(Project $project): \Illuminate\Http\JsonResponse
+    {
+        return Response()->json($project,200);
     }
 }
