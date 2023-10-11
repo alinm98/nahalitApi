@@ -56,6 +56,11 @@ class Product extends Model
         return $this->belongsToMany(Order::class);
     }
 
+    public function tag(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Tag::class);
+    }
+
 
 
 

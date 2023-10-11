@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\ServiceGroupController;
 use App\Http\Controllers\Api\V1\Admin\SmsController;
+use App\Http\Controllers\Api\V1\Admin\TagController;
 use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
 use App\Http\Controllers\Api\V1\Admin\VisitController;
@@ -101,6 +102,9 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::get('blogs/{blog}',[BlogController::class,'show']);
 
     Route::get('discounts/{product_id}',[DiscountController::class,'show']);
+
+    Route::apiResource('tags', TagController::class);
+    Route::get('tags/productTags/{product}',[TagController::class,'tagProduct']);
 
 
 
