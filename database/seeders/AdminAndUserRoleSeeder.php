@@ -34,6 +34,7 @@ class AdminAndUserRoleSeeder extends Seeder
             'mobile' => '09227205827',
             'password' => bcrypt(12345678),
             'email' => 'mail@mail.com',
+            'mobile_verify' => 1,
             'role_id' => 1
         ]);
 
