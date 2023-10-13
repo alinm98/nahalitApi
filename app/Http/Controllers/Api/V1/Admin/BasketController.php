@@ -96,7 +96,8 @@ class BasketController extends Controller
     public function destroyAll($id): \Illuminate\Http\JsonResponse
     {
         $user = $user = User::query()->where('id' , $id)->firstOrFail();
-        $baskets = $user->basket;
+        $baskets = $user->baskets;
+
         foreach ($baskets as $basket){
             $basket->delete();
         }
