@@ -25,7 +25,7 @@ class UpdateBlogRequest extends FormRequest
     {
         return [
             'title' => ['max:200'],
-            'image' => [],
+            'image' => ['nullable'],
             'body' => ['min:20'],
             'user_id' => ['nullable', 'exists:users,id']
         ];

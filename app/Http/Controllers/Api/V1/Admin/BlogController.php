@@ -176,7 +176,7 @@ class BlogController extends Controller
         $newData = $request->all();
 
         /* Store Image */
-        if($request->hasFile('image')){
+        if($request->$request->get('image')){
 
             /* Delete Old Image */
             if(Storage::exists('public/images/products' . $blog->image)){
@@ -195,6 +195,9 @@ class BlogController extends Controller
 
         }
         /* Store Image */
+        else{
+            $newData['image'] = $blog->image;
+        }
 
 
 
