@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\Admin\CouponController;
 use App\Http\Controllers\Api\V1\Admin\DiscountController;
 use App\Http\Controllers\Api\V1\Admin\GalleryController;
 use App\Http\Controllers\Api\V1\Admin\IpController;
+use App\Http\Controllers\Api\V1\Admin\NewsController;
 use App\Http\Controllers\Api\V1\Admin\OrderController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Admin\ProductPropertyController;
@@ -75,6 +76,9 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
     Route::get('baskets/{id}', [BasketController::class, 'show']);
 
+    Route::get('news', [NewsController::class, 'index']);
+    Route::get('news/{news}', [NewsController::class, 'show']);
+
 
 
 
@@ -120,6 +124,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
     Route::apiResource('categories' , CategoryController::class)->except('index', 'show');
     Route::apiResource('products' , ProductController::class)->except('index', 'show');
+    Route::apiResource('news',NewsController::class)->except('index', 'show');
     //Route::apiResource('products.discounts', DiscountController::class);
     Route::post('discounts/{product_id}',[DiscountController::class,'store']);
     Route::delete('discounts/{product_id}',[DiscountController::class,'destroy']);
