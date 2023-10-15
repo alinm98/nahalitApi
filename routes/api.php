@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\V1\Admin\SellerController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\ServiceGroupController;
 use App\Http\Controllers\Api\V1\Admin\SmsController;
+use App\Http\Controllers\Api\V1\Admin\SourceController;
 use App\Http\Controllers\Api\V1\Admin\TagController;
 use App\Http\Controllers\Api\V1\Admin\TicketController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
@@ -110,6 +111,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('tags', TagController::class);
     Route::get('tags/productTags/{product}',[TagController::class,'tagProduct']);
 
+    Route::get('sources/getAdSource/{value}',[SourceController::class,'getSource']);
+
 
 
 
@@ -125,6 +128,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::apiResource('categories' , CategoryController::class)->except('index', 'show');
     Route::apiResource('products' , ProductController::class)->except('index', 'show');
     Route::apiResource('news',NewsController::class)->except('index', 'show');
+    Route::apiResource('sources',SourceController::class)->except('update', 'show');
     //Route::apiResource('products.discounts', DiscountController::class);
     Route::post('discounts/{product_id}',[DiscountController::class,'store']);
     Route::delete('discounts/{product_id}',[DiscountController::class,'destroy']);
