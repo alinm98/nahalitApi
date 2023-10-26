@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Console\View\Components\Info;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use IPPanel\Client;
 
 class SmsController extends Controller
 {
@@ -86,14 +87,27 @@ class SmsController extends Controller
     public function sendSms(): \Illuminate\Http\JsonResponse
     {
 
+
         $mobileExist = Sms::query()->where('mobile', auth()->user()->mobile)->exists();
         if ($mobileExist){
             return Response()->json([
                 'massage' => 'کد تایید قبلا ارسال شده است'
             ],403);
         }
+        $apiKey = 'r36IPCYj0c_S2W2a3n4LzvxOjugs_9EgMfjzDKGYO-c=';
+        $client = new Client($apiKey);
 
         $code = rand(10000, 99999);
+        $massage = auth()->user()->first_name . ' ' . auth()->user()->last_name . ' عزیز، خوش آمدید. کد تایید شما : ' . $code;
+        //dd(hebrev( $massage,  $max_chars_per_line = 0));
+        $massageID = $client->send(
+            '3000505',
+            ['989227205827'],
+            $massage,
+            ''
+        );
+
+        dd($massageID);
 
         Sms::query()->create([
             'mobile' => auth()->user()->mobile,
@@ -102,7 +116,7 @@ class SmsController extends Controller
 
 
         return Response()->json([
-            'massage' => 'کد تایید ارسال شد. لطفا تا دو دقیقه دیگر کد تایید را وارد کنید.'
+            'massage' => 'کد تایید ارسال شد. لطفا تا پنج دقیقه دیگر کد تایید را وارد کنید.'
         ], 201);
 
     }
@@ -117,7 +131,7 @@ class SmsController extends Controller
         }
 
         $sms = Sms::query()->where('mobile',auth()->user()->mobile)->firstOrFail();
-        if (date_diff($sms->created_at, Carbon::now())->i > 1){
+        if (date_diff($sms->created_at, Carbon::now())->i > 4){
             $sms->delete();
             return Response()->json([
                 'massage' => 'این کد تایید منقضی شده است. لطفا دوباره درخواست کد کنید.'
@@ -138,7 +152,7 @@ class SmsController extends Controller
         }
         else{
             return Response()->json([
-                'massage' => 'کد وارد شده شما اشتباه است'
+                'massage' => 'کد وارد شده اشتباه است'
             ],403);
         }
 
