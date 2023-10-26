@@ -107,8 +107,6 @@ class SmsController extends Controller
             ''
         );
 
-        dd($massageID);
-
         Sms::query()->create([
             'mobile' => auth()->user()->mobile,
             'code' => bcrypt($code),
