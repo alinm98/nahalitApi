@@ -98,23 +98,42 @@ class SmsController extends Controller
         $client = new Client($apiKey);
 
         $code = rand(10000, 99999);
-        $massage = auth()->user()->first_name . ' ' . auth()->user()->last_name . ' عزیز، خوش آمدید. کد تایید شما : ' . $code;
-        //dd(hebrev( $massage,  $max_chars_per_line = 0));
-        $massageID = $client->send(
+        $massage = auth()->user()->first_name . " " . auth()->user()->last_name . " عزیز،\n خوش آمدید. کد تایید شما :\n" .
+            $code . "\nشرکت نهال ای تی";
+
+        $mobile = auth()->user()->mobile;
+
+        //send with pattern
+        $value = [
+            'code' => $code
+        ];
+        $massageID = $client->sendPattern(
+            'fzosmal7lxz7o3l',
             '3000505',
-            ['989227205827'],
+            $mobile,
+            $value
+        );
+        //end send with pattern
+
+        //send with Send one to many
+        /*$massageID = $client->send(
+            '3000505',
+            ['989938860644'],
             $massage,
             ''
-        );
+        );*/
+        //end send with Send one to many
+
 
         Sms::query()->create([
             'mobile' => auth()->user()->mobile,
             'code' => bcrypt($code),
+
         ]);
 
 
         return Response()->json([
-            'massage' => 'کد تایید ارسال شد. لطفا تا پنج دقیقه دیگر کد تایید را وارد کنید.'
+            'massage' => 'کد تایید ارسال شد. لطفا تا دو دقیقه دیگر کد تایید را وارد کنید.',
         ], 201);
 
     }
@@ -129,7 +148,7 @@ class SmsController extends Controller
         }
 
         $sms = Sms::query()->where('mobile',auth()->user()->mobile)->firstOrFail();
-        if (date_diff($sms->created_at, Carbon::now())->i > 4){
+        if (date_diff($sms->created_at, Carbon::now())->i > 1){
             $sms->delete();
             return Response()->json([
                 'massage' => 'این کد تایید منقضی شده است. لطفا دوباره درخواست کد کنید.'
