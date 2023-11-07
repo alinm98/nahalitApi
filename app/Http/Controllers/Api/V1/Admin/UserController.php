@@ -19,10 +19,10 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(checkPermissions::class.":view-role")->only(['index']);
+        $this->middleware(checkPermissions::class.":view-user")->only(['index']);
 
-        $this->middleware(checkPermissions::class.":update-role")->only(['update']);
-        $this->middleware(checkPermissions::class.":delete-role")->only(['delete']);
+        $this->middleware(checkPermissions::class.":update-user")->only(['update']);
+        $this->middleware(checkPermissions::class.":delete-user")->only(['delete']);
     }
 
 

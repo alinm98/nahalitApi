@@ -86,20 +86,34 @@ class SmsController extends Controller
 
     public function sendSms(): \Illuminate\Http\JsonResponse
     {
+        if (auth()->user()->mobile_verify == 1){
+            return Response()->json([
+                'massage' => 'شماره شما قبلا تایید شده است'
+            ],401);
+        }
 
 
         $mobileExist = Sms::query()->where('mobile', auth()->user()->mobile)->exists();
         if ($mobileExist){
-            return Response()->json([
-                'massage' => 'کد تایید قبلا ارسال شده است'
-            ],403);
+            $sms = Sms::query()->where('mobile', auth()->user()->mobile)->firstOrFail();
+            if (date_diff($sms->created_at, Carbon::now())->i > 1){
+                $sms->delete();
+            }
+            else {
+                return Response()->json([
+                    'massage' => 'کد تایید ارسال شده است . برای درخواست کد جدید لطفا تا دو دقیقه صبر کنید'
+                ], 403);
+            }
         }
+
+
+
         $apiKey = 'r36IPCYj0c_S2W2a3n4LzvxOjugs_9EgMfjzDKGYO-c=';
         $client = new Client($apiKey);
 
         $code = rand(10000, 99999);
-        $massage = auth()->user()->first_name . " " . auth()->user()->last_name . " عزیز،\n خوش آمدید. کد تایید شما :\n" .
-            $code . "\nشرکت نهال ای تی";
+        /*$massage = auth()->user()->first_name . " " . auth()->user()->last_name . " عزیز،\n خوش آمدید. کد تایید شما :\n" .
+            $code . "\nشرکت نهال ای تی";*/
 
         $mobile = auth()->user()->mobile;
 
@@ -144,15 +158,16 @@ class SmsController extends Controller
         if (!$mobileExist){
             return Response()->json([
                 'massage' => 'کد تایید برای این شماره ارسال نشده است'
-            ],403);
+            ],401);
         }
+
 
         $sms = Sms::query()->where('mobile',auth()->user()->mobile)->firstOrFail();
         if (date_diff($sms->created_at, Carbon::now())->i > 1){
             $sms->delete();
             return Response()->json([
-                'massage' => 'این کد تایید منقضی شده است. لطفا دوباره درخواست کد کنید.'
-            ],403);
+                'massage' => 'کد تایید منقضی شده است. لطفا دوباره درخواست کد کنید.'
+            ],401);
         }
         $user = auth()->user();
 
@@ -170,7 +185,7 @@ class SmsController extends Controller
         else{
             return Response()->json([
                 'massage' => 'کد وارد شده اشتباه است'
-            ],403);
+            ],401);
         }
 
     }
