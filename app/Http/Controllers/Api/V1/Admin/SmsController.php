@@ -8,7 +8,10 @@ use App\Http\Requests\StoreSmsRequest;
 use App\Http\Requests\UpdateSmsRequest;
 use App\Http\Requests\verifySmsRequest;
 use App\Models\Sms;
+use App\Models\User;
 use Carbon\Carbon;
+use http\Env\Request;
+use http\Env\Response;
 use Illuminate\Console\View\Components\Info;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -84,6 +87,9 @@ class SmsController extends Controller
         //
     }
 
+
+
+
     public function sendSms(): \Illuminate\Http\JsonResponse
     {
         if (auth()->user()->mobile_verify == 1){
@@ -158,7 +164,7 @@ class SmsController extends Controller
         if (!$mobileExist){
             return Response()->json([
                 'massage' => 'کد تایید برای این شماره ارسال نشده است'
-            ],401);
+            ],403);
         }
 
 
@@ -167,7 +173,7 @@ class SmsController extends Controller
             $sms->delete();
             return Response()->json([
                 'massage' => 'کد تایید منقضی شده است. لطفا دوباره درخواست کد کنید.'
-            ],401);
+            ],403);
         }
         $user = auth()->user();
 
@@ -185,8 +191,108 @@ class SmsController extends Controller
         else{
             return Response()->json([
                 'massage' => 'کد وارد شده اشتباه است'
-            ],401);
+            ],403);
         }
 
     }
+
+
+
+    public function oneTimeCode(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $mobile = $request->get('mobile');
+
+        $userExists = User::query()->where('mobile', $mobile)->exists();
+        if (!$userExists){
+            return response()->json([
+                'massage' => 'کاربری با این شماره وجود ندارد'
+            ],'403');
+        }
+
+        $user = User::query()->where('mobile', $mobile)->get();
+
+        $mobileExist = Sms::query()->where('mobile', $user->mobile)->exists();
+        if ($mobileExist){
+            $sms = Sms::query()->where('mobile', $user->mobile)->firstOrFail();
+            if (date_diff($sms->created_at, Carbon::now())->i > 1){
+                $sms->delete();
+            }
+            else {
+                return Response()->json([
+                    'massage' => 'کد یکبار مصرف ارسال شده است . برای درخواست کد جدید لطفا تا دو دقیقه صبر کنید'
+                ], 403);
+            }
+        }
+
+        $apiKey = 'r36IPCYj0c_S2W2a3n4LzvxOjugs_9EgMfjzDKGYO-c=';
+        $client = new Client($apiKey);
+
+        $code = rand(10000, 99999);
+
+        $mobile = $user->mobile;
+
+        //send with pattern
+        $value = [
+            'code' => $code
+        ];
+        $massageID = $client->sendPattern(
+            '6jn13rj19p0hid5',
+            '3000505',
+            $mobile,
+            $value
+        );
+
+        Sms::query()->create([
+            'mobile' => auth()->user()->mobile,
+            'code' => bcrypt($code),
+
+        ]);
+
+        return Response()->json([
+            'massage' => 'کد یکبار مصرف ارسال شد. لطفا تا دو دقیقه دیگر کد تایید را وارد کنید.',
+        ], 201);
+    }
+
+
+    public function verifyOneTimeCode(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $mobile = $request->get('mobile');
+        $code = $request->get('code');
+
+        $mobileExist = Sms::query()->where('mobile',$mobile)->exists();
+        if (!$mobileExist){
+            return Response()->json([
+                'massage' => 'کد یکبار مصرف برای این شماره ارسال نشده است'
+            ],403);
+        }
+
+
+        $sms = Sms::query()->where('mobile',$mobile)->firstOrFail();
+        if (date_diff($sms->created_at, Carbon::now())->i > 1){
+            $sms->delete();
+            return Response()->json([
+                'massage' => 'کد یکبار مصرف منقضی شده است. لطفا دوباره درخواست کد کنید.'
+            ],403);
+        }
+        $user = User::query()->where('mobile', $mobile)->firstOrFail();
+
+        if (Hash::check($request->get('code'),$sms->code)){
+            $token = $user->createToken($user->username)->plainTextToken;
+            $sms->delete();
+
+            return Response()->json([
+                'massage' => 'شما با موفقیت وارد شدید',
+                'user' => $user,
+                'token' => $token
+            ], 200);
+
+        }
+        else{
+            return Response()->json([
+                'massage' => 'کد وارد شده اشتباه است'
+            ],403);
+        }
+    }
+
+
 }

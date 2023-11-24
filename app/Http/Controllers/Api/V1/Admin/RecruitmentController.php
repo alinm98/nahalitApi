@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\v1\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\checkPermissions;
+use App\Http\Requests\storeRecruitmentRequest;
 use App\Http\Resources\v1\RecruitmentCollection;
 use App\Http\Resources\v1\RecruitmentResource;
 use App\Models\Recruitment;
@@ -51,7 +52,7 @@ class RecruitmentController extends Controller
         return new RecruitmentResource($recruitment);
     }
 
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(storeRecruitmentRequest $request): \Illuminate\Http\JsonResponse
     {
         $recruitment = Recruitment::query()->create([
             'first_name' => $request->get('first_name'),

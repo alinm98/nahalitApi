@@ -113,6 +113,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
     Route::get('sources/getAdSource/{value}',[SourceController::class,'getSource']);
 
+    Route::post('recruitments',[RecruitmentController::class,'store']);
+
 
 
 
@@ -184,4 +186,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
     Route::post('sms/sendVerify',[SmsController::class,'sendSms']);
     Route::post('sms/verify',[SmsController::class,'verify']);
+
+    Route::post('sms/oneTimeCode',[SmsController::class,'oneTimeCode']);
+    Route::post('sms/verifyOneTimeCode',[SmsController::class,'verifyOneTimeCode']);
+
 });
