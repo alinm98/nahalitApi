@@ -10,9 +10,10 @@ use App\Http\Requests\verifySmsRequest;
 use App\Models\Sms;
 use App\Models\User;
 use Carbon\Carbon;
-use http\Env\Request;
+
 use http\Env\Response;
 use Illuminate\Console\View\Components\Info;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use IPPanel\Client;
@@ -209,11 +210,11 @@ class SmsController extends Controller
             ],'403');
         }
 
-        $user = User::query()->where('mobile', $mobile)->get();
+        $user = User::query()->where('mobile', $mobile)->firstOrFail()->toArray();
 
-        $mobileExist = Sms::query()->where('mobile', $user->mobile)->exists();
+        $mobileExist = Sms::query()->where('mobile', $user['mobile'])->exists();
         if ($mobileExist){
-            $sms = Sms::query()->where('mobile', $user->mobile)->firstOrFail();
+            $sms = Sms::query()->where('mobile', $user['mobile'])->firstOrFail();
             if (date_diff($sms->created_at, Carbon::now())->i > 1){
                 $sms->delete();
             }
@@ -229,7 +230,7 @@ class SmsController extends Controller
 
         $code = rand(10000, 99999);
 
-        $mobile = $user->mobile;
+        $mobile = $user['mobile'];
 
         //send with pattern
         $value = [
