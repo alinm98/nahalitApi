@@ -12,6 +12,8 @@ use App\Http\Resources\V1\RoleCollection;
 use App\Http\Resources\V1\RoleResource;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
+use http\Env\Request;
 
 class RoleController extends Controller
 {
@@ -133,5 +135,16 @@ class RoleController extends Controller
             'status' => true,
             'massage' => 'حذف با موفقیت انجام شد'
         ], 200);
+    }
+
+    public function changeUserRole(\Illuminate\Http\Request $request, User $user): \Illuminate\Http\JsonResponse
+    {
+        $user->update([
+            'role_id' => $request->get('role_id')
+        ]);
+
+        return response()->json([
+            'massage'=> 'نقش کاربر با موفقیت تغییر پیدا کرد'
+        ],200);
     }
 }

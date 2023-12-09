@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Api\V1\Admin\BannerController;
 use App\Http\Controllers\Api\V1\Admin\BasketController;
 use App\Http\Controllers\Api\V1\Admin\BlogController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
@@ -203,6 +204,6 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::post('/recruitmentProperties/{user}',[SupervisorController::class,'recruitmentProperties']);
     Route::post('/getSupervisorProjects/{user}',[SupervisorController::class,'getSupervisorProjects']);
     Route::post('/setSupervisorProject/{user}/{project}',[SupervisorController::class,'setSupervisorProject']);
-
-
+    Route::post('/role/changeUserRole',[RoleController::class,'changeUserRole']);
+    Route::apiResource('/banners',BannerController::class);
 });
