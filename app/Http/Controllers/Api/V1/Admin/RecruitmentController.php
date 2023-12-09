@@ -55,17 +55,17 @@ class RecruitmentController extends Controller
     public function store(storeRecruitmentRequest $request): \Illuminate\Http\JsonResponse
     {
         $recruitment = Recruitment::query()->create([
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->get('last_name'),
             'birthday' => $request->get('birthday'),
             'martial_status' => $request->get('martial_status'),
             'address' => $request->get('address'),
-            'phone' => $request->get('phone'),
             'activity' => $request->get('activity'),
             'eduction_status' => $request->get('eduction_status'),
             'ability_description' => $request->get('ability_description'),
             'shaba_number' => $request->get('shaba_number'),
             'status' => $request->get('status'),
+            'card_number' => $request->get('card_number'),
+            'code_melli' => $request->get('code_melli'),
+            'user_id' => $request->get('user_id')
         ]);
 
         return Response()->json([

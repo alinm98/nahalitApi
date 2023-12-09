@@ -295,5 +295,47 @@ class SmsController extends Controller
         }
     }
 
+    public function verifyResetPassword(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $mobile = $request->get('mobile');
+        $code = $request->get('code');
+
+        $mobileExist = Sms::query()->where('mobile',$mobile)->exists();
+        if (!$mobileExist){
+            return Response()->json([
+                'massage' => 'کد تایید برای این شماره ارسال نشده است'
+            ],403);
+        }
+
+
+        $sms = Sms::query()->where('mobile',$mobile)->firstOrFail();
+        if (date_diff($sms->created_at, Carbon::now())->i > 1){
+            $sms->delete();
+            return Response()->json([
+                'massage' => 'کد تایید منقضی شده است. لطفا دوباره درخواست کد کنید.'
+            ],403);
+        }
+        $user = User::query()->where('mobile', $mobile)->firstOrFail();
+
+        if (Hash::check($code,$sms->code)){
+            $sms->delete();
+
+            return Response()->json([
+                'massage' => 'کد وارد شده درست است',
+                'result' => true
+            ], 200);
+
+        }
+        else{
+            return Response()->json([
+                'massage' => 'کد وارد شده اشتباه است',
+                'result' => false
+            ],403);
+        }
+    }
+
+
+
+
 
 }

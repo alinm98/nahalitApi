@@ -25,8 +25,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'code_meli',
-        'card_number',
         'mobile_verify'
     ];
 
@@ -78,6 +76,11 @@ class User extends Authenticatable
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function recruitment(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Recruitment::class);
     }
 
 }

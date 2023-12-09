@@ -160,19 +160,6 @@ class UserController extends Controller
         }
 
 
-        $code_meli = $request->get('code_meli');
-        if ($code_meli){
-            //check for unique code_meli
-            $code_meliExist = User::query()->where('code_meli', $request->get('code_meli'))
-                ->where('id', '!=', $user->id)->exists();
-
-            if ($code_meliExist) {
-                return Response()->json([
-                    'error' => 'این کد ملی اکنون وچود دارد'
-                ], 400);
-            }
-        }
-
         $card_number = $request->get('card_number');
         if ($card_number){
             //check for unique card_number
@@ -195,8 +182,6 @@ class UserController extends Controller
             'password' => bcrypt($request->get('password')),
             'email' => $request->get('email'),
             'role_id' => $request->get('role_id'),
-            'code_meli' => $request->get('code_meli'),
-            'card_number' => $request->get('card_number'),
         ]);
 
         return Response()->json([

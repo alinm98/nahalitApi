@@ -123,7 +123,7 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role): \Illuminate\Http\JsonResponse
     {
         $role->permissions()->detach();
 

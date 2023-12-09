@@ -118,9 +118,11 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
     Route::post('sms/oneTimeCode',[SmsController::class,'oneTimeCode']);
     Route::post('sms/verifyOneTimeCode',[SmsController::class,'verifyOneTimeCode']);
+    Route::post('sms/verifyResetPassword',[SmsController::class,'verifyResetPassword']);
 
-    Route::get('/supervisors',[SupervisorController::class,'index']);
-    Route::get('/supervisors/projects/{supervisor}',[SupervisorController::class,'projects']);
+
+
+
 
 
 
@@ -194,6 +196,13 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::post('sms/sendVerify',[SmsController::class,'sendSms']);
     Route::post('sms/verify',[SmsController::class,'verify']);
 
+    Route::get('/supervisors',[SupervisorController::class,'index']);
+    Route::get('/supervisors/projects/{supervisor}',[SupervisorController::class,'projects']);
+    Route::post('/choiceRecruitment/{user}',[SupervisorController::class,'choiceRecruitment']);
+    Route::post('/choiceSupervisor/{user}',[SupervisorController::class,'choiceSupervisor']);
+    Route::post('/recruitmentProperties/{user}',[SupervisorController::class,'recruitmentProperties']);
+    Route::post('/getSupervisorProjects/{user}',[SupervisorController::class,'getSupervisorProjects']);
+    Route::post('/setSupervisorProject/{user}/{project}',[SupervisorController::class,'setSupervisorProject']);
 
 
 });

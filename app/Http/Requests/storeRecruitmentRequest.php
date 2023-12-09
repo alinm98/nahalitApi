@@ -24,17 +24,17 @@ class storeRecruitmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'min:3', "max:50"],
-            'last_name' => ['required', 'min:3', 'max:50'],
             'birthday' => ['required', 'date'],
             'martial_status' => ['required', 'boolean'],
             'address' => ['required','min:10', 'max:200'],
-            'phone' => ['required', 'digits:11'],
             'activity' => ['required'],
             'eduction_status' => ['required'],
             'ability_description' => ['nullable'],
-            'shaba_number' => ['required'],
-            'status' => ['nullable', 'boolean'],
+            'shaba_number' => ['required', 'digits:24'],
+            'status' => ['nullable', 'in:waiting,rejected,accepted'],
+            'card_number' => ['required', 'digits:16'],
+            'code_melli' => ['required', 'digits:10'],
+            'user_id' => ['required', 'exists:users,id']
         ];
     }
 }

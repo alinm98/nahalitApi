@@ -19,10 +19,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('username')->unique();
             $table->string('mobile')->unique();
-            $table->string('card_number')->nullable()->unique();
-            $table->string('code_meli')->nullable()->unique();
             $table->boolean('mobile_verify');
-
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

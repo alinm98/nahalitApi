@@ -27,6 +27,7 @@ class UpdateProductRequest extends FormRequest
             'title' => ['required'],
             'price' => ['required', 'integer', 'min:1000'],
             'image' => ['nullable', 'mimes:png,jpg,peg,mpeg', 'min:1', 'max:2048'],
+            'file' => ['nullable', 'mimes:zip', 'file', 'max:50000'],
             'description' => ['required'],
             'category_id' => ['required', 'exists:categories,id'],
         ];

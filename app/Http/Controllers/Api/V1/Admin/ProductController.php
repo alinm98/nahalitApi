@@ -49,12 +49,16 @@ class ProductController extends Controller
         $image = $request->file('image')->store('public/images/products');
         $image = str_replace('public', '/storage', $image);
 
+        $file = $request->file('file')->store('public/upload/products');
+        $file = str_replace('public', '/storage', $file);
+
 
         //store product in database
         $product = Product::query()->create([
             'title' => $request->get('title'),
             'price' => $request->get('price'),
             'image' => url($image),
+            'file' => url($file),
             'description' => $request->get('description'),
             'category_id' => $request->get('category_id'),
         ]);
@@ -95,6 +99,14 @@ class ProductController extends Controller
             $image = str_replace('public', '/storage', $image);
         }
 
+        //store new file(if exist)
+        $file = $product->file;
+        if ($request->file('file') != null) {
+            Storage::delete($file);
+            $file = $request->file('image')->store('public/upload/products');
+            $file = str_replace('public', '/storage', $file);
+        }
+
         //check for unique title
         $productExist = Category::query()->where('title' , $request->get('title'))
             ->where('id' , '!=' , $product->id)->exists();
@@ -110,6 +122,7 @@ class ProductController extends Controller
             'title' => $request->get('title'),
             'price' => $request->get('price'),
             'image' => url($image),
+            'file' => url($file),
             'description' => $request->get('description'),
             'category_id' => $request->get('category_id'),
         ]);

@@ -8,6 +8,7 @@ use App\Http\Resources\V1\ProjectCollection;
 use App\Models\Project;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -43,7 +44,15 @@ class ProjectController extends Controller
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
+        $request->validate([
+            'file' => 'required|file|mimes:zip|max:50000',
+        ]);
+
+        $file = $request->file('file')->store('public/upload/projects');
+        $file = str_replace('public', '/storage', $file);
+
         $data = $request->all();
+        $data['file'] = url($file);
 
         $project = $this->model->create($data);
 
@@ -52,7 +61,20 @@ class ProjectController extends Controller
 
     public function update(Request $request,Project $project): \Illuminate\Http\JsonResponse
     {
+        $request->validate([
+            'file' => 'nullable|file|mimes:zip|max:50000',
+        ]);
+
+        //store new file(if exist)
+        $file = $project->file;
+        if ($request->file('file') != null) {
+            Storage::delete($file);
+            $file = $request->file('image')->store('public/upload/projects');
+            $file = str_replace('public', '/storage', $file);
+        }
+
         $data = $request->all();
+        $data['file'] = url($file);
 
         $res = $project->update($data);
 

@@ -21,5 +21,6 @@ class Project extends Model
         'confirm',
         'status',
         'progress',
+        'user_id'
     ];
 }
