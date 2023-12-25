@@ -160,19 +160,6 @@ class UserController extends Controller
         }
 
 
-        $card_number = $request->get('card_number');
-        if ($card_number){
-            //check for unique card_number
-            $card_numberExist = User::query()->where('card_number', $request->get('card_number'))
-                ->where('id', '!=', $user->id)->exists();
-
-            if ($card_numberExist) {
-                return Response()->json([
-                    'error' => 'این شماره کارت اکنون وچود دارد'
-                ], 400);
-            }
-        }
-
 
         $user->update([
             'first_name' => $request->get('first_name'),
@@ -181,7 +168,6 @@ class UserController extends Controller
             'mobile' => $request->get('mobile'),
             'password' => bcrypt($request->get('password')),
             'email' => $request->get('email'),
-            'role_id' => $request->get('role_id'),
         ]);
 
         return Response()->json([

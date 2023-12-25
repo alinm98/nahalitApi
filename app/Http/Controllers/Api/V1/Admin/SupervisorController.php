@@ -111,4 +111,9 @@ class SupervisorController extends Controller
             'massage' => $massage
         ],200);
     }
+
+    public function getRecruitments()
+    {
+
+    }
 }

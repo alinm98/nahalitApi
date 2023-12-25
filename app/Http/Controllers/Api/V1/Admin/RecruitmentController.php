@@ -28,16 +28,18 @@ class RecruitmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index():RecruitmentCollection
+    public function index(): \Illuminate\Http\JsonResponse
     {
 
         /* Get All Recruitments */
         $recruitments = $this->model->all();
         /* Get All Recruitments */
 
-        return new RecruitmentCollection($recruitments);
+        return response()->json([
+            'recruitment' => new RecruitmentCollection(Recruitment::all())
+        ],200);
 
     }
 
@@ -45,11 +47,11 @@ class RecruitmentController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Recruitment $recruitment):RecruitmentResource
+    public function show(Recruitment $recruitment): \Illuminate\Http\JsonResponse
     {
-        return new RecruitmentResource($recruitment);
+        return response()->json(new RecruitmentResource($recruitment),200);
     }
 
     public function store(storeRecruitmentRequest $request): \Illuminate\Http\JsonResponse
@@ -70,7 +72,7 @@ class RecruitmentController extends Controller
 
         return Response()->json([
             'massage' => 'فرم شما با موفقیت ثبت شد',
-            'data' => $recruitment
+            'recruitment' => $recruitment
         ], 201);
     }
 

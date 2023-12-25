@@ -66,9 +66,9 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::get('blogs/search/{value}', [BlogController::class, 'search']);
 
 
-    Route::post('users/register', [UserController::class, 'store']);
+    Route::post('users/register', [UserController::class, 'store'])->middleware([\Fruitcake\Cors\HandleCors::class]);
 
-    Route::post('users/login', [UserController::class, 'login']);
+    Route::post('users/login', [UserController::class, 'login'])->middleware([\Fruitcake\Cors\HandleCors::class]);
 
 
     Route::get('categories', [CategoryController::class, 'index']);
@@ -201,9 +201,11 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::get('/supervisors/projects/{supervisor}',[SupervisorController::class,'projects']);
     Route::post('/choiceRecruitment/{user}',[SupervisorController::class,'choiceRecruitment']);
     Route::post('/choiceSupervisor/{user}',[SupervisorController::class,'choiceSupervisor']);
-    Route::post('/recruitmentProperties/{user}',[SupervisorController::class,'recruitmentProperties']);
-    Route::post('/getSupervisorProjects/{user}',[SupervisorController::class,'getSupervisorProjects']);
-    Route::post('/setSupervisorProject/{user}/{project}',[SupervisorController::class,'setSupervisorProject']);
-    Route::post('/role/changeUserRole',[RoleController::class,'changeUserRole']);
+    Route::get('/recruitmentProperties/{user}',[SupervisorController::class,'recruitmentProperties']);
+    Route::get('/getSupervisorProjects/{user}',[SupervisorController::class,'getSupervisorProjects']);
+    Route::get('/setSupervisorProject/{user}/{project}',[SupervisorController::class,'setSupervisorProject']);
+    Route::post('/role/changeUserRole/{user}',[RoleController::class,'changeUserRole']);
     Route::apiResource('/banners',BannerController::class);
+
+    Route::post('recruitments',[RecruitmentController::class,'store']);
 });
