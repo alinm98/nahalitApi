@@ -5,8 +5,8 @@ namespace App\Http\Controllers\api\v1\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\checkPermissions;
 use App\Http\Requests\storeRecruitmentRequest;
-use App\Http\Resources\v1\RecruitmentCollection;
-use App\Http\Resources\v1\RecruitmentResource;
+use App\Http\Resources\V1\RecruitmentCollection;
+use App\Http\Resources\V1\RecruitmentResource;
 use App\Models\Recruitment;
 use Illuminate\Http\Request;
 
