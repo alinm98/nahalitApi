@@ -34,7 +34,7 @@ return array(
     "different"        => ":attribute و :other باید متفاوت باشند.",
     "digits"           => ":attribute باید :digits رقم باشد.",
     "digits_between"   => ":attribute باید بین :min و :max رقم باشد.",
-    'dimensions' => ' :attribute تصویر پروفایل باید حداقل 100*100 px و حداکثر 500*500 px باشد.',
+    'dimensions' => 'اندازه :attribute باید با عرض :width و طول :height باشد',
     "email"            => "فرمت :attribute معتبر نیست.",
     "exists"           => ":attribute انتخاب شده، معتبر نیست.",
     "image"            => ":attribute باید تصویر باشد.",

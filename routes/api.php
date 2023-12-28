@@ -205,7 +205,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::get('/getSupervisorProjects/{user}',[SupervisorController::class,'getSupervisorProjects']);
     Route::get('/setSupervisorProject/{user}/{project}',[SupervisorController::class,'setSupervisorProject']);
     Route::post('/role/changeUserRole/{user}',[RoleController::class,'changeUserRole']);
-    Route::apiResource('/banners',BannerController::class);
+    Route::apiResource('/banners',BannerController::class)->except('update');
+    Route::patch('/banners/{banner}',[BannerController::class,'update']);
 
     Route::post('recruitments',[RecruitmentController::class,'store']);
 });

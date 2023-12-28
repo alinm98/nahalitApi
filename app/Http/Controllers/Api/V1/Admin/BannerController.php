@@ -63,8 +63,9 @@ class BannerController extends Controller
     public function update(UpdateBannerRequest $request, Banner $banner): \Illuminate\Http\JsonResponse
     {
         $image = $banner->image;
-        if ($request->file('image') != null) {
-            Storage::delete($image);
+        //dd($request->file('image'));
+        if (!empty($request->file('image'))) {
+            $banner->deleteImage();
             $image = $request->file('image')->store('public/images/products');
             $image = str_replace('public', '/storage', $image);
         }
@@ -87,7 +88,7 @@ class BannerController extends Controller
      */
     public function destroy(Banner $banner): \Illuminate\Http\JsonResponse
     {
-        Storage::delete($banner->image);
+        $banner->deleteImage();
         $banner->delete();
         return response()->json([
             'massage' => 'بنر با موفقیت حذف شد'
