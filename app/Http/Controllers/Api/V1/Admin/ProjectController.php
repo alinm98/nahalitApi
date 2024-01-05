@@ -45,7 +45,7 @@ class ProjectController extends Controller
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
-            'file' => 'required|file|mimes:zip|max:50000',
+            'file' => 'nullable|file|mimes:zip|max:50000',
         ]);
 
         $file = $request->file('file')->store('public/upload/projects');

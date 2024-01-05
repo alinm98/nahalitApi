@@ -120,6 +120,8 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::post('sms/oneTimeCode',[SmsController::class,'oneTimeCode']);
     Route::post('sms/verifyOneTimeCode',[SmsController::class,'verifyOneTimeCode']);
     Route::post('sms/verifyResetPassword',[SmsController::class,'verifyResetPassword']);
+    Route::get('banners',[BannerController::class,'index']);
+    Route::get('/work_samples',[WorkSampleController::class,'index']);
 
 
 
@@ -177,7 +179,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
 
     Route::apiResource('projects', ProjectController::class)->except(['destroy']);
 
-    Route::apiResource('work-sample', WorkSampleController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::apiResource('work-samples', WorkSampleController::class)->only([ 'store', 'update', 'destroy']);
 
     Route::apiResource('recruitments', RecruitmentController::class)->only(['index', 'show']);
 
@@ -205,7 +207,7 @@ Route::group(['prefix' => 'v1' , 'namespace' => 'App\Http\Controllers\Api\V1\Adm
     Route::get('/getSupervisorProjects/{user}',[SupervisorController::class,'getSupervisorProjects']);
     Route::get('/setSupervisorProject/{user}/{project}',[SupervisorController::class,'setSupervisorProject']);
     Route::post('/role/changeUserRole/{user}',[RoleController::class,'changeUserRole']);
-    Route::apiResource('/banners',BannerController::class)->except('update');
+    Route::apiResource('/banners',BannerController::class)->except('update','index');
     Route::patch('/banners/{banner}',[BannerController::class,'update']);
 
     Route::post('recruitments',[RecruitmentController::class,'store']);
