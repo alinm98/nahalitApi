@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api\V1\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\checkPermissions;
+use App\Http\Requests\storeProjectRequest;
+use App\Http\Requests\updateProjectRequest;
 use App\Http\Resources\V1\ProjectCollection;
 use App\Models\Project;
 use Illuminate\Contracts\Support\Responsable;
@@ -19,8 +21,8 @@ class ProjectController extends Controller
     {
         $this->model = new Project();
 
-        $this->middleware(checkPermissions::class.":view-project")->only(['index', 'show']);
-        $this->middleware(checkPermissions::class.":create-project")->only(['store']);
+        //$this->middleware(checkPermissions::class.":view-project")->only(['index', 'show']);
+        //$this->middleware(checkPermissions::class.":create-project")->only(['store']);
         $this->middleware(checkPermissions::class.":update-project")->only(['update']);
         $this->middleware(checkPermissions::class.":delete-project")->only(['delete']);
 
@@ -42,40 +44,38 @@ class ProjectController extends Controller
 
     }
 
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(storeProjectRequest $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'file' => 'nullable|file|mimes:zip|max:50000',
-        ]);
 
-        $file = $request->file('file')->store('public/upload/projects');
-        $file = str_replace('public', '/storage', $file);
 
         $data = $request->all();
-        $data['file'] = url($file);
+
+        if (!empty($request->file('file'))){
+            $file = $request->file('file')->store('public/upload/projects');
+            $file = str_replace('public', '/storage', $file);
+            $data['file'] = url($file);
+        }
+
+
 
         $project = $this->model->create($data);
 
         return Response()->json($project,201);
     }
 
-    public function update(Request $request,Project $project): \Illuminate\Http\JsonResponse
+    public function update(updateProjectRequest $request,Project $project): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'file' => 'nullable|file|mimes:zip|max:50000',
-        ]);
 
         //store new file(if exist)
-        $file = $project->file;
+        $data = $request->all();
         if ($request->file('file') != null) {
+            $file = $project->file;
             Storage::delete($file);
             $file = $request->file('image')->store('public/upload/projects');
             $file = str_replace('public', '/storage', $file);
+            $data['file'] = url($file);
         }
-
-        $data = $request->all();
-        $data['file'] = url($file);
-
+        
         $res = $project->update($data);
 
         return Response()->json([
