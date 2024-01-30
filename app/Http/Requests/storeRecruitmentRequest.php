@@ -33,7 +33,7 @@ class storeRecruitmentRequest extends FormRequest
             'shaba_number' => ['required', 'digits:24'],
             'status' => ['nullable', 'in:waiting,rejected,accepted'],
             'card_number' => ['required', 'digits:16'],
-            'code_melli' => ['required', 'digits:10'],
+            'code_meli' => ['required', 'digits:10'],
             'user_id' => ['required', 'exists:users,id']
         ];
     }

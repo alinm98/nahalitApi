@@ -24,11 +24,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
             $table->string('file');
             $table->boolean('confirm');
-            $table->enum('status', [
-                'answered',
-                'waiting',
-                'failed'
-            ]);
+            $table->boolean('status')->nullable();
             $table->integer('progress');
             $table->timestamps();
         });
